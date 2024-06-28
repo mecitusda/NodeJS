@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head') %>
+    <%- include('../partials/head',title="Home") %>
 </head>
 <body>
+    <% if (who_active === "users") { %>
+        <%- include('../partials/nav',{user_isactive:true,home_isactive:false});%>
+        <% } %>
     
-    <%- include('../partials/nav') %>
-    
+        <% if(who_active === "index") { %>
+        <%- include('../partials/nav',{user_isactive:false,home_isactive:true});%>
+        <% } %>
+         
+         
+
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-3">
@@ -21,19 +28,17 @@
                 <h1 class="h3 mb-3"><%=title %></h1>
                 <%
                 
+                /* Blog Cards */
                 blogs.forEach(function (blog){
-                    %> 
-
-            <% if (temp.verify && temp.isvisible) { %>
-              
+                    %>     
                <%- include('../partials/blog-card',blog) %>
 
-               <% } %>
+             
 
         <%  
     }) %>
 
-            <% if (blogs.filter(i => i.verify).length > 2) { %>
+            <% if (blogs.filter(i => i.isvisible).filter(a => a.home).filter(b => b.verify).length > 3) { %>
                 <%- include('../partials/pagination') %>
                  <% } %>
                 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head',title="Blog Sayfası") %>
+
+</head>
+<body>
+
+    <% if (who_active === "users") { %>
+        <%- include('../partials/nav',{user_isactive:true,home_isactive:false});%>
+        <% } %>
+    
+        <% if(who_active === "index") { %>
+        <%- include('../partials/nav',{user_isactive:false,home_isactive:true});%>
+        <% } %>
+
+        <% if(who_active === "blog") { %>
+            <%- include('../partials/nav',{user_isactive:false,home_isactive:true});%>
+            <% } %>
+         
+    <div class="container mt-3">
+        <div class="card">
+
+            <div class="card-body">
+
+ 
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <img src="/static/images/<%= blog[0].picture %>" class="img-fluid" alt="">
+                    </div>
+        
+        
+                    <div class="col-md-8">
+                     <h1 class="h3 mb-3"> <%= blog[0].title %></h1>
+                      <p><%= blog[0].explanation %></p>
+                       
+                      
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+
+       
+    </div>
+
+    
+    
+    
+</body>
+</html>

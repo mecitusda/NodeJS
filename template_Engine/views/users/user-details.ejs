@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head') %>
+    <%- include('../partials/head',title="User-Details") %>
 </head>
 <body>
     
@@ -22,10 +22,7 @@
             <div class="col-md-3">
                 <!-- menu -->
                 <div class="list-group">
-                    <a href="" class="list-group-item list-group-item-action active">Web Geliştirme</a>
-                    <a href="" class="list-group-item list-group-item-action">Mobil Uygulamalar</a>
-                    <a href="" class="list-group-item list-group-item-action">Veri Analizi</a>
-                    <a href="" class="list-group-item list-group-item-action">Programlama</a>
+                    <%- include('../partials/category-menu',categories) %>
                 </div>
             </div>
             <div class="col-md-9">

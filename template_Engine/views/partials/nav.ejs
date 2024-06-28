@@ -1,9 +1,10 @@
 <nav class="navbar navbar-dark bg-danger navbar-expand-lg">
     <div class="container">
-        <a href="/" class="navbar-brand">Blogapp</a>
-        <ul class="navbar-nav me-auto">
+        <a href="/" class="navbar-brand <%= home_isactive ? 'active' : '' %>"  > Blogapp</a>
+        
+        <ul class="navbar-nav me-auto" >
             <li class="nav-item">
-                <a href="/kullanicilar" class="nav-link">Kullanıcı</a>
+                <a href="/kullanicilar" class="nav-link <%= user_isactive ? 'active' : '' %>">Tüm bloglar</a>
             </li>
         </ul>
     </div>

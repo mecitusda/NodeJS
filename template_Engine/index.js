@@ -1,6 +1,9 @@
 const express=require("express");
-const user_routers=require("./routes/user")
+const user_routers= require("./routes/user")
 const admin_routers=require("./routes/admin")
+
+
+
 
 var app=express();
 const path=require("path");
@@ -15,7 +18,8 @@ app.use(admin_routers)
 app.use(user_routers)
 
 
+
    
 
     
-app.listen(322,console.log("dinlendi."))
+app.listen(200,console.log("dinlendi."))
