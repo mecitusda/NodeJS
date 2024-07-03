@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../partials/head',title="Users") %>
+    <%- include('../partials/head',title=title) %>
+    <link rel="stylesheet" href="static/css/main.css">
 </head>
 <body>
+    
     <% if (who_active === "users") { %>
     <%- include('../partials/nav',{user_isactive:true,home_isactive:false});%>
     <% } %>
@@ -18,7 +20,7 @@
             <div class="col-md-3">
                 <div class="list-group">
                    
-                    <%- include('../partials/category-menu',categories) %>
+                    <%- include('../partials/category-menu',{categories,SelectedCategory}) %>
                     
                     
                 </div>
@@ -29,10 +31,16 @@
              
                 <h1 class="h3 mb-3"><%=title %></h1>
                 
+                <% if (blogs.length == 0) { %>
+                    <%- include('../partials/no-product') %>
+                    <% } %>
+                
                 <%
                 blogs.forEach(function (blog){
                 %> 
-
+               
+               
+                
             <%
              if (blog.verify && blog.isvisible) {
              %>
@@ -40,7 +48,7 @@
                <%- include('../partials/blog-card',blog) %>
 
                <% } %>
-
+                
         <%  
     }) %>
             

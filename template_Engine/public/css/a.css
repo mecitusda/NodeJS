@@ -1,0 +1,14 @@
+
+a.list-group-item.list-group-item-warning:hover  {
+    background-color: seashell !important;   /* Örnek olarak mavi arka plan rengi */
+}
+
+.list.group-item-warning.active:hover {
+    background-color: seashell !important;   /* Örnek olarak mavi arka plan rengi */
+}
+
+.list.group-item-warning:hover {
+    background-color: seashell !important;   /* Örnek olarak mavi arka plan rengi */
+}
+
+/* background-color: seashell !important;*/
