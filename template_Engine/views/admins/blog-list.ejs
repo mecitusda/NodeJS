@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/libs/bootstrap/dist/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <!-- navigation -->
+    <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-mb-12">
+                <table class="table table-bordered table-striped">
+                    
+                    <thead>
+                        <tr>
+                            <td style="width: 50px;">id</td>
+                            <td style="width: 200px;">picture</td>
+                            <td>title</td>
+                            <td style="width: 150px;"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% blogs.forEach( (element) => { %>
+                        <tr >
+                            <td>#<%=element.id%></td>
+                            <td>
+        <img src="/static/images/<%=element.picture %>" class="img-fluid" alt=""></td>
+                            
+                            <td><%= element.title %></td>
+                            <td class="align-content-center ">
+                                <button class="btn btn-group-sm btn-primary">edit</button>
+                                <button class="btn btn-group-sm  btn-danger">delete</button>
+                            </td>
+                           
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+    </div>
+
+
+    
+
+
+
+</body>
+</html>

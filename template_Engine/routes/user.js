@@ -24,13 +24,21 @@ router.use("/blog/category/:categoryid", async (req, res) => {
             type: db.QueryTypes.SELECT
         });
     
+        
         const categories = await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
+
+        const kullanicilar_id=await db.query("SELECT id FROM pages WHERE page_name='Kullanicilar'", { type: db.QueryTypes.SELECT });
+
+        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${kullanicilar_id[0].id}`, { type: db.QueryTypes.SELECT });
+
         res.status(200).render("users/users", {
             title: "Kategoriye Göre Bloglar",
             categories: categories,
             blogs: blogs,
-            who_active: "index",
-            SelectedCategory: req.params.categoryid
+            nav_items: nav_items,
+            who_active: "Home",
+            SelectedCategory: req.params.categoryid,
+            main_Page:"",
         });
 
     } catch (err) {
@@ -45,11 +53,19 @@ router.use("/blog/:id", async (req, res, next) => {
             replacements: { id: req.params.id },
             type: db.QueryTypes.SELECT
         });
+
+        const kullanicilar_id=await db.query("SELECT id FROM pages WHERE page_name='Kullanicilar'", { type: db.QueryTypes.SELECT });
+
+        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${kullanicilar_id[0].id}`, { type: db.QueryTypes.SELECT });
+
+
         if (blogs[0]) {
             return res.status(200).render("users/blog", {
                 blog: blogs,
-                who_active: "blog",
-                SelectedCategory:null
+                who_active: "Home",
+                nav_items: nav_items,
+                SelectedCategory:null,
+                main_Page:""
             });
         }
         
@@ -70,7 +86,8 @@ router.use("/kullanicilar/:kullaniciid/detaylar/:isim", async (req, res, next) =
             title: data.title,
             categories: categories,
             blogs: blogs,
-            SelectedCategory:null
+            SelectedCategory:null,
+            main_Page:""
         });
 
     } catch (err) {
@@ -83,13 +100,21 @@ router.use("/kullanicilar", async (req, res, next) => {
     try {
         const blogs = await db.query("SELECT * FROM blog", { type: db.QueryTypes.SELECT });
         const categories = await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
+        
+            const kullanicilar_id=await db.query("SELECT id FROM pages WHERE page_name='Kullanicilar'", { type: db.QueryTypes.SELECT });
+
+            const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${kullanicilar_id[0].id}`, { type: db.QueryTypes.SELECT });
+
+        console.log(nav_items);
         if(blogs)
         res.status(200).render("users/users", {
             title: data.title,
             categories: categories,
             blogs: blogs,
-            who_active: "users",
-            SelectedCategory:null
+            nav_items: nav_items,
+            who_active: "All Blogs",
+            SelectedCategory:null,
+            main_Page:""
         });
     } catch (err) {
         console.log(err);
@@ -104,12 +129,18 @@ router.use("/", async (req, res, next) => {
         });
         const categories = await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
 
+        const home_id=await db.query("SELECT id FROM pages WHERE page_name='Home'", { type: db.QueryTypes.SELECT });
+
+        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${home_id[0].id}`, { type: db.QueryTypes.SELECT });
+     
         res.status(200).render("users/index", {
             title: data.title,
             categories: categories,
             blogs: blogs,
+            nav_items: nav_items,
             who_active: "index",
-            SelectedCategory:null
+            SelectedCategory:null,
+            main_Page:""
         });
     } catch (err) {
         console.log(err);

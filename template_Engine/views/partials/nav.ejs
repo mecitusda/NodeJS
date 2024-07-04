@@ -1,13 +1,18 @@
 <nav class="navbar navbar-dark text-bg-dark navbar-expand-lg">
     <div class="container">
-        <a href="/" class="navbar-brand <%= home_isactive ? 'active' : '' %>"  > Blogapp</a>
+        <a href="/<%=main_Page%>" class="navbar-brand"> Blogapp</a>
         
         <ul class="navbar-nav me-auto" >
-            <li class="nav-item">
-                <a href="/kullanicilar" class="nav-link <%= user_isactive ? 'active' : '' %>">
-                    Create Blog
+            <% nav_items.forEach( (element) => { %>
+             <li class="nav-item">
+                <a href="<%=element.item_directory%>" class="nav-link <%= who_active==element.item_name ? 'active' : '' %>">
+                    <%= element.item_name %>
                 </a>
             </li>
+
+            <% }) %>
+
+            
         </ul>
     </div>
 </nav>

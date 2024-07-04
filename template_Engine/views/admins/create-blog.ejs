@@ -6,14 +6,7 @@
 </head>
 <body>
     
-    <% if (who_active === "create-blog") { %>
-    <%- include('../partials/nav',{user_isactive:true,home_isactive:false});%>
-    <% } %>
-
-    <% if(who_active === "index") { %>
-    <%- include('../partials/nav',{user_isactive:false,home_isactive:true});%>
-    <% } %>
-     
+  <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
 
     <div class="container mt-3">
        

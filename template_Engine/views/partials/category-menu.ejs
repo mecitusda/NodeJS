@@ -1,6 +1,6 @@
 <a href="javascript:void(0);" class="list-group-item list-group-item-dark disabled" style="background-color: #CED4DA;">Tüm Kategoriler</a>
 <% categories.forEach(function (categories){ %>
-    <a href="/blog/category/<%= categories.id_category %>"  class="list-group-item list-group-item-warning <%= categories.id_category == SelectedCategory ? 'active':''%>" > <%= categories.name %> </a>
+    <a href="<%=directory_menu+categories.id_category %>"  class="list-group-item list-group-item-warning <%= categories.id_category == SelectedCategory ? 'active':''%>" > <%= categories.name %> </a>
     
 <%  
 }) %>

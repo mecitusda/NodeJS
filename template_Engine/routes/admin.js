@@ -11,13 +11,64 @@ const data={
     active_page:""
 }
 
+router.get("/blogs",async (req,res,next) => {
+
+    const blogs= await db.query("SELECT * FROM blog", { type: db.QueryTypes.SELECT });
+
+    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='admin_Create_Blog'", { type: db.QueryTypes.SELECT });
+
+        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
+
+    res.render("admins/blog-list",{
+        blogs:blogs,    
+        title:"Blog List",
+        nav_items:nav_items,
+        who_active:"All Blogs",
+        main_Page:"admin",
+        SelectedCategory:null
+    })
+
+})
+
+router.use("/blog/category/:categoryid",async (req,res,next) => {   
+
+    const blogs = await db.query("SELECT * FROM blog WHERE id_category=:id", {
+            replacements: { id: req.params.categoryid },
+            type: db.QueryTypes.SELECT
+        });
+
+    const categories = await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
+    
+    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='Home_Admin'", { type: db.QueryTypes.SELECT });
+
+        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
+
+    res.render("admins/admin-category",{
+        blogs:blogs,
+        title:"Admin",
+        nav_items:nav_items,
+        who_active:"",
+        main_Page:"admin",
+        categories:categories,
+        SelectedCategory:req.params.categoryid
+    })
+    })
+
 router.get("/blog/create",async (req,res,next) => {
     const categories= await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
-    res.render("admins/create-blog",{
+    
+    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='admin_Create_Blog'", { type: db.QueryTypes.SELECT });
+
+        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
+
+
+    res.render("admins/create-blog",{   
         title:"Create Blog",
-        who_active:"create-blog",
+        who_active:"Create Blog",
+        nav_items:nav_items,
         categories:categories,
-        iscreated:false
+        iscreated:false,
+        main_Page:"admin"
     })
 });
 
@@ -28,7 +79,7 @@ router.post("/blog/create",async (req,res,next) => {
     const home=req.body.home == "on" ? true : false;
     const isvisible=req.body.isvisible == "on" ? true : false;
     
- 
+    
    const insert_blog=await db.query(`INSERT INTO blog (title, explanation, picture, id_category, home, verify, isvisible) VALUES ('${baslik}','${aciklama}', '${resim}',${category},${home}, ${verify}, ${isvisible});`);
    
     res.redirect("/");
@@ -49,10 +100,26 @@ router.use("/list",(req,res,next) => {
 
 
     
-router.use("/",(req,res,next) => {
-  
+router.use("/",async (req,res,next) => {
+
+    const blogs = await db.query("SELECT * FROM blog where verify=1 AND home=1 AND isvisible=1", {
+        type: db.QueryTypes.SELECT
+    });
+    const categories = await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
     
-    res.render("admins/admin",data)
+    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='Home_Admin'", { type: db.QueryTypes.SELECT });
+
+        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
+
+    res.render("admins/admin",{
+        blogs:blogs,
+        title:"Admin",
+        nav_items:nav_items,
+        who_active:"",
+        main_Page:"admin",
+        categories:categories,
+        SelectedCategory:null
+    })
 })
 
 module.exports=router;
