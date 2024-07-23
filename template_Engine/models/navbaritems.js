@@ -1,36 +1,27 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/db');
 
-
-const blog = db.define('blog', {
+const NavbarItem = db.define('navbaritems', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  title: {
+  page_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  item_name: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  explanation: {
+  item_directory: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  picture: {
+  position: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  home:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
-  },
-  verify:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
-  },
-  isvisible:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
   },
   createdAt: {
     type: DataTypes.DATE,
@@ -44,9 +35,10 @@ const blog = db.define('blog', {
   }
 
 }, {
-  tableName: 'blog', // Veritabanında mevcut olan tablo adı
+  tableName: 'navbaritems', // Veritabanında mevcut olan tablo adı
   freezeTableName: true, // Tablonun adının otomatik olarak çoğul yapılmasını engeller
   timestamps: true // createdAt ve updatedAt alanlarını devre dışı bırakır
+  
 });
-blog.sync({ alter: true });
-module.exports = blog;
+NavbarItem.sync({ alter: true });
+module.exports = NavbarItem;

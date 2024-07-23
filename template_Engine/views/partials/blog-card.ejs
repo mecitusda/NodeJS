@@ -11,7 +11,7 @@
 <div class="col-md-8">
     <div class="card-body">
         <h5 class="card-title">
-           <a href ="/blog/<%=id %>" style="text-decoration: none;"><%= title %></a> 
+           <a href ="<%= main_Page == "admin" ? '/admin' : ''%>/blog/<%=id %>" style="text-decoration: none;"><%= title %></a> 
         </h5>
         <p class="card-text"><%= explanation%></p>
     </div>

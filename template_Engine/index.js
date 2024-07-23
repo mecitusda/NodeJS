@@ -3,7 +3,7 @@ const user_routers= require("./routes/user")
 const admin_routers=require("./routes/admin")
 
 var app=express();
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({extended:false}));
 
 const path=require("path");
 app.set("view engine","ejs");//vies engine oluşturduk.html uzantıları ejs uzantısına çevirdik.

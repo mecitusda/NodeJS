@@ -1,18 +1,31 @@
-<nav class="navbar navbar-dark text-bg-dark navbar-expand-lg">
+<nav class="navbar navbar-dark text-bg-danger navbar-expand-lg">
     <div class="container">
-        <a href="/<%=main_Page%>" class="navbar-brand"> Blogapp</a>
+        <a href="/<%=main_Page%>" class="navbar-brand "> Blogapp</a>
         
         <ul class="navbar-nav me-auto" >
             <% nav_items.forEach( (element) => { %>
-             <li class="nav-item">
-                <a href="<%=element.item_directory%>" class="nav-link <%= who_active==element.item_name ? 'active' : '' %>">
+             <li class="nav-item ">
+                <% if (element.position === "left") { %>
+                    <a href="<%=element.item_directory%>" class="nav-link <%= who_active==element.item_name ? 'active' : '' %>">
+                        <%= element.item_name %>
+                    </a>
+                <% } %>
+               
+            </li>
+                
+            <% }) %>
+        </ul>
+        <% nav_items.forEach((element) => { %>
+            <% if (element.position === "right") { %>
+                <ul class="navbar-nav"> <li><a href="<%=element.item_directory  %>" class="nav-link <%= who_active==element.item_name ? 'active' : '' %>">
                     <%= element.item_name %>
                 </a>
             </li>
-
-            <% }) %>
-
-            
-        </ul>
+                </ul>
+            <% } %>
+        <% }) %>
+       
+        
+        
     </div>
 </nav>

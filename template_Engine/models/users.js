@@ -1,36 +1,27 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/db');
 
-
-const blog = db.define('blog', {
+  const User = db.define('users', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  title: {
+  username: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  explanation: {
+  password: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  picture: {
+  e_mail: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  home:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
-  },
-  verify:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
-  },
-  isvisible:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
+  position: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
   createdAt: {
     type: DataTypes.DATE,
@@ -44,9 +35,9 @@ const blog = db.define('blog', {
   }
 
 }, {
-  tableName: 'blog', // Veritabanında mevcut olan tablo adı
+  tableName: 'users', // Veritabanında mevcut olan tablo adı
   freezeTableName: true, // Tablonun adının otomatik olarak çoğul yapılmasını engeller
   timestamps: true // createdAt ve updatedAt alanlarını devre dışı bırakır
 });
-blog.sync({ alter: true });
-module.exports = blog;
+User.sync({ alter: true });
+module.exports = User;

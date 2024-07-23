@@ -1,36 +1,15 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/db');
 
-
-const blog = db.define('blog', {
-  id: {
+const Category = db.define('categories', {
+  id_category: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  title: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  explanation: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  picture: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  home:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
-  },
-  verify:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
-  },
-  isvisible:{
-    type:DataTypes.BOOLEAN,
-    allowNull:false
   },
   createdAt: {
     type: DataTypes.DATE,
@@ -42,11 +21,10 @@ const blog = db.define('blog', {
     defaultValue: DataTypes.NOW,
     allowNull: true,
   }
-
 }, {
-  tableName: 'blog', // Veritabanında mevcut olan tablo adı
+  tableName: 'categories', // Veritabanında mevcut olan tablo adı
   freezeTableName: true, // Tablonun adının otomatik olarak çoğul yapılmasını engeller
   timestamps: true // createdAt ve updatedAt alanlarını devre dışı bırakır
 });
-blog.sync({ alter: true });
-module.exports = blog;
+Category.sync({ alter: true });
+module.exports = Category;
