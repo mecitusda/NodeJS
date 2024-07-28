@@ -24,7 +24,7 @@
              
                 <h1 class="h3 mb-3"><%=title %></h1>
                 
-                <% if (blogs.length == 0  ||  (blogs.length != 0 && !blogs[0].verify)) { %>
+                <% if (blogs.length === 0  ||  (blogs.length !== 0 && !blogs[0].verify)) { %>
                     <%- include('../partials/no-product') %>
                     <% } %>
                 
@@ -38,7 +38,7 @@
              if (blog.verify && blog.isvisible) {
              %>
               
-               <%- include('../partials/blog-card',blog) %>
+               <%- include('../partials/blog-card',{blog}) %>
 
                <% } %>
                 

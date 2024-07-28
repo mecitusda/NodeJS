@@ -14,12 +14,12 @@ const Page = db.define('pages', {
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: true,
+    allowNull: false,
   },
   updatedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: true,
+    allowNull: false,
   }
 
 }, {
@@ -27,5 +27,5 @@ const Page = db.define('pages', {
   freezeTableName: true, // Tablonun adının otomatik olarak çoğul yapılmasını engeller
   timestamps: true // createdAt ve updatedAt alanlarını devre dışı bırakır
 });
-Page.sync({ alter: true });
+
 module.exports = Page;

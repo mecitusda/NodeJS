@@ -2,14 +2,11 @@ const { DataTypes } = require('sequelize');
 const db = require('../config/db');
 
 const NavbarItem = db.define('navbaritems', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
+ 
   page_id: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    
   },
   item_name: {
     type: DataTypes.STRING,
@@ -26,12 +23,12 @@ const NavbarItem = db.define('navbaritems', {
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: true,
+    allowNull: false,
   },
   updatedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: true,
+    allowNull: false,
   }
 
 }, {

@@ -3,11 +3,6 @@ const db = require('../config/db');
 
 
 const blog = db.define('blog', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
   title: {
     type: DataTypes.STRING,
     allowNull: false
@@ -35,12 +30,12 @@ const blog = db.define('blog', {
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: true,
+    allowNull: false,
   },
   updatedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: true,
+    allowNull: false,
   }
 
 }, {
@@ -48,5 +43,6 @@ const blog = db.define('blog', {
   freezeTableName: true, // Tablonun adının otomatik olarak çoğul yapılmasını engeller
   timestamps: true // createdAt ve updatedAt alanlarını devre dışı bırakır
 });
-blog.sync({ alter: true });
+
+
 module.exports = blog;

@@ -4,16 +4,16 @@
 <div class="row">
 
 <div class="col-md-4"> 
-    <img src="/static/images/<%= picture %>" class="img-fluid" alt="">
+    <img src="/static/images/<%=blog.picture%>" class="img-fluid" alt="">
     
         
 </div>
 <div class="col-md-8">
     <div class="card-body">
         <h5 class="card-title">
-           <a href ="<%= main_Page == "admin" ? '/admin' : ''%>/blog/<%=id %>" style="text-decoration: none;"><%= title %></a> 
+           <a href ="<%= main_Page == "admin" ? '/admin' : ''%>/blog/<%=blog.id %>" style="text-decoration: none;"><%= blog.title %></a> 
         </h5>
-        <p class="card-text"><%= explanation%></p>
+        <p class="card-text"><%= blog.explanation%></p>
     </div>
 </div>
 

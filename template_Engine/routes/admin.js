@@ -2,7 +2,9 @@
 const express=require("express");
 const router =express.Router();
 const db = require("../config/db");
-const { INTEGER } = require("sequelize");
+const { Op } = require("sequelize");
+const { table } = require("console");
+
 const tables = {
     blog : require("../models/blog"),
     category : require("../models/category"),
@@ -14,21 +16,15 @@ var i=1;
 
 
 
-const data={
-    title:"Anasayfa",
-    categories:["Web Geliştirme","Mobil Uygulamalar","Veri Analizi","Programlama"],
-    active_page:""
-}
-
-
-
 router.get("/blogs",async (req,res,next) => {
    
-    const blogs= await db.query("SELECT * FROM blog", { type: db.QueryTypes.SELECT });
+    const blogs= await tables.blog.findAll({});
 
-    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='admin_Create_Blog'", { type: db.QueryTypes.SELECT });
+    const Admin_id=await tables.pages.findOne({where:{page_name:"admin_Create_Blog"}}).then((pages) => {return pages.getDataValue("id")});
 
-        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
+        
+     
 
     res.render("admins/blog-list",{
         blogs:blogs,    
@@ -41,19 +37,13 @@ router.get("/blogs",async (req,res,next) => {
 
 })
 
-router.use("/blog/category/:categoryid",async (req,res,next) => {   
+router.get("/blog/category/:categoryid",async (req,res,next) => {   
 
-    const blogs = await db.query("SELECT * FROM blog WHERE id_category=:id", {
-            replacements: { id: req.params.categoryid },
-            type: db.QueryTypes.SELECT
-        });
-
-    const categories = await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
-    
-    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='Home_Admin'", { type: db.QueryTypes.SELECT });
-
-        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
-
+    const blogs = (await tables.blog.findAll({where:{id_category:req.params.categoryid}}))
+    const categories = await tables.category.findAll({});
+    const Admin_id=await tables.pages.findOne({where:{page_name:"Home_Admin"}}).then((pages) => {return pages.getDataValue("id")});
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
+   
     res.render("admins/admin-category",{
         blogs:blogs,
         title:"Admin",
@@ -84,13 +74,13 @@ router.use("/blog/category/:categoryid",async (req,res,next) => {
 
 });*/
 router.get("/blog/create",async (req,res,next) => {
-    const categories= await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
+    const categories= await tables.category.findAll({});
+     
     
-    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='admin_Create_Blog'", { type: db.QueryTypes.SELECT });
-
-        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
-        
-        
+    const Admin_id=await tables.pages.findOne({where:{page_name:"admin_Create_Blog"}}).then((pages) => {return pages.getDataValue("id")});
+   
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
+    
 
     res.render("admins/create-blog",{   
         title:"Create Blog",
@@ -108,14 +98,11 @@ router.get("/blog/delete/:blogid",async(req,res,next) => {
         return res.status(404).send("Blog id bulunamadı.");
     }
     
-    const delete_blog=await db.query(`DELETE FROM blog WHERE id=${req.params.blogid}`);
-
-    const blogs= await db.query("SELECT * FROM blog", { type: db.QueryTypes.SELECT });
-
-    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='admin_Create_Blog'", { type: db.QueryTypes.SELECT });
-
-        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
-    
+    const delete_blog=await tables.blog.destroy({where:{id:req.params.blogid}});
+    const blogs= await tables.blog.findAll({});
+    const Admin_id=await tables.pages.findOne({where:{page_name:"admin_Create_Blog"}}).then((pages) => {return pages.getDataValue("id")});
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
+  
     
 
     return res.render("admins/blog-list",{
@@ -139,22 +126,25 @@ router.post("/blog/create",async (req,res,next) => {
     const isvisible=req.body.isvisible == "on" ? true : false;
     
     
-   const insert_blog=await db.query(`INSERT INTO blog (title, explanation, picture, id_category, home, verify, isvisible) VALUES ("${baslik}","${aciklama}","${resim}",${category},${home}, ${verify}, ${isvisible});`);
+   const insert_blog=await tables.blog.create({title:baslik,explanation:aciklama,picture:resim,id_category:category,home:home,verify:verify,isvisible:isvisible});
+  
    
     res.redirect("/admin/blog/create?variable=${true}");
 })
 
 router.get("/blog/edit/:blogid",async(req,res,next) => {
-    const blog = await db.query("SELECT * FROM blog WHERE id = :id", {type: db.QueryTypes.SELECT, replacements: { id: req.params.blogid }});
+    const blog = await tables.blog.findAll({where:{id:req.params.blogid}});
+   
 
-    const kullanicilar_id=await db.query("SELECT id FROM pages WHERE page_name='admin_edit'", { type: db.QueryTypes.SELECT });
+    const kullanicilar_id=await tables.pages.findOne({where:{page_name:"admin_edit"}}).then((pages) => {return pages.getDataValue("id")});
 
-    const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${kullanicilar_id[0].id}`, { type: db.QueryTypes.SELECT });
-
-    const categories= await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:kullanicilar_id}});
+   
+    const categories= await tables.category.findAll({});
+   
 
     if(!blog[0]){
-        return alert("Blog bulunamadı.");
+        return console.log("Blog bulunamadı.");
     }
 
     res.render("admins/edit-blog",{
@@ -178,22 +168,37 @@ router.post("/blog/edit/:blogid",async(req,res,next) => {
     const home=req.body.home == "on" ? true : false;
     const isvisible=req.body.isvisible == "on" ? true : false;
 
-    const update_blog=await db.query(`UPDATE blog SET title="${baslik}", explanation="${aciklama}", picture="${resim}", id_category="${category}", home=${home}, verify=${verify}, isvisible=${isvisible} WHERE id=${req.params.blogid}`);
+    const update_blog=await tables.blog.update({title:baslik,explanation:aciklama,picture:resim,id_category:category,home:home,verify:verify,isvisible:isvisible},{where:{id:req.params.blogid}});
+    
+    
+    const blog = await tables.blog.findOne({where:{id:req.params.blogid}}).then((blog) => {return blog});
+ 
 
-    const blog = await db.query("SELECT * FROM blog WHERE id = :id", {type: db.QueryTypes.SELECT, replacements: { id: req.params.blogid }});
+    const kullanicilar_id=await tables.pages.findOne({where:{page_name:"admin_edit"}}).then((pages) => {return pages.getDataValue("id")});
 
-    const kullanicilar_id=await db.query("SELECT id FROM pages WHERE page_name='admin_edit'", { type: db.QueryTypes.SELECT });
 
-    const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${kullanicilar_id[0].id}`, { type: db.QueryTypes.SELECT });
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:kullanicilar_id}});
+  
 
-    const categories= await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
+    const categories= await tables.category.findAll({});
+  
 
-    if(!update_blog[0]){
-        return alert("Blog editlenirken bir hata oluştu.");
+    if(!update_blog){
+        console.log("Blog güncellenemedi.");
+        return  res.render("admins/edit-blog",{
+            blog:blog,
+            title:"Edit Blog",
+            who_active:"Edit Blog",
+            main_Page:"admin",
+            nav_items:nav_items,
+            categories:categories,
+            iscreated:true
+        
+        });
     }
 
     res.render("admins/edit-blog",{
-        blog:blog[0],
+        blog:blog,
         title:"Edit Blog",
         who_active:"Edit Blog",
         main_Page:"admin",
@@ -210,16 +215,9 @@ router.post("/blog/edit/:blogid",async(req,res,next) => {
 
 router.get("/blog/:blogid",async (req,res,next) => {
     
-    const blogs = await db.query("SELECT * FROM blog WHERE id = :id", {
-        replacements: { id: req.params.blogid },
-        type: db.QueryTypes.SELECT
-    });
-    console.log("girdi")
-    const kullanicilar_id=await db.query("SELECT id FROM pages WHERE page_name='admin_blog'", { type: db.QueryTypes.SELECT });
-
-    const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${kullanicilar_id[0].id}`, { type: db.QueryTypes.SELECT });
-
-
+    const blogs = await tables.blog.findAll({where:{id:req.params.blogid}});
+    const kullanicilar_id=await tables.pages.findOne({where:{page_name:"admin_blog"}}).then((pages) => {return pages.getDataValue("id")});
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:kullanicilar_id}});
     if (blogs[0]) {
         return res.status(200).render("admins/admin-blog", {
             blog: blogs,
@@ -247,9 +245,10 @@ router.use("/list",(req,res,next) => {
 
 router.get("/add_admin",async(req,res,next) => {
    
-    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='admin_add_admin'", { type: db.QueryTypes.SELECT });
-
-    const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
+    const Admin_id=await tables.pages.findOne({where:{page_name:"admin_add_admin"}}).then((pages) => {return pages.getDataValue("id")});
+  
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
+    
     res.render("admins/add-admin",{
         title:"Add Admin",
         nav_items:nav_items,
@@ -264,14 +263,16 @@ router.post("/add_admin",async(req,res,next) => {
     console.log("Giriş ",(i++));
     const {username,email:temp_email,email_option,password}=req.body;
     email=temp_email+email_option;
-    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='admin_add_admin'", { type: db.QueryTypes.SELECT });
+    const Admin_id=await tables.pages.findOne({where:{page_name:"admin_add_admin"}}).then((pages) => {return pages.getDataValue("id")});
+  
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
 
-    const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
+    const isExist=await tables.users.findOne({where:
+          { [Op.or]: [{username:username},{e_mail:email}]}});
     
-    const isExist=await db.query(`SELECT id FROM users WHERE username='${username}' OR e_mail='${email}'`, { type: db.QueryTypes.SELECT });
-
-    if(isExist.length>0){
-        return res.render("admins/add-admin",{
+    console.log("isExist",isExist);
+    if(isExist !== null){
+        return res.render("admins/add-admin",{  
                      title:"Add Admin",
                      nav_items:nav_items,
                      who_active:"Add Admin",
@@ -279,8 +280,8 @@ router.post("/add_admin",async(req,res,next) => {
                      eklendi:[true,message="kullanıcı adı veya email zaten var."]
                             })
     }
-    const insert_user=await db.query(`INSERT INTO users (username,e_mail,password,position) VALUES ("${username}","${email}","${password}","Admin")`);
-
+    const insert_user=await tables.users.create({username:username,e_mail:email,password:password,position:"Admin"});
+    
     res.render("admins/add-admin",{
         title:"Add Admin",
         nav_items:nav_items,
@@ -295,16 +296,11 @@ router.post("/add_admin",async(req,res,next) => {
     
 router.use("/",async (req,res,next) => {
 
-    const blogs = await db.query("SELECT * FROM blog where verify=1 AND home=1 AND isvisible=1", {
-        type: db.QueryTypes.SELECT
-    });
-    const categories = await db.query("SELECT * FROM categories", { type: db.QueryTypes.SELECT });
-    
-    const Admin_id=await db.query("SELECT id FROM pages WHERE page_name='Home_Admin'", { type: db.QueryTypes.SELECT });
-
-        const nav_items = await db.query(`SELECT * FROM navbaritems WHERE page_id=${Admin_id[0].id}`, { type: db.QueryTypes.SELECT });
-
-   
+    const blogs = await tables.blog.findAll({where:{verify:1,home:1,isvisible:1}});
+    const categories = await tables.category.findAll({});
+    const Admin_id=await tables.pages.findOne({where:{page_name:"Home_Admin"}}).then((pages) => {return pages.getDataValue("id")});
+    const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
+   console.log(blogs);
 
     res.render("admins/admin",{
         blogs:blogs,

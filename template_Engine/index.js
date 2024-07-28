@@ -5,6 +5,9 @@ const admin_routers=require("./routes/admin")
 var app=express();
 app.use(express.urlencoded({extended:false}));
 
+
+   
+
 const path=require("path");
 app.set("view engine","ejs");//vies engine oluşturduk.html uzantıları ejs uzantısına çevirdik.
                             //pathleri kaldırıp direk views'in altında aradığı için uzantıyı düzelttik.
@@ -27,10 +30,16 @@ app.use("/static",(req,res,next) => {
 
 app.use("/admin",admin_routers)
 app.use(user_routers)
+const db=require("./config/db")
 
-
+//
+const dummy_data = require("./config/dummy-data");
+(async () => {
+    
+    await dummy_data();
+    await db.sync({alter:true});
+})()
 
    
-
     
 app.listen(200,console.log("dinlendi."))

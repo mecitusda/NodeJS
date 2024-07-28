@@ -26,12 +26,12 @@ const db = require('../config/db');
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: true,
+    allowNull: false,
   },
   updatedAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-    allowNull: true,
+    allowNull: false,
   }
 
 }, {
