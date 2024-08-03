@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head',title=title) %>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script src="/static/js/alert-timeout.js"></script>
+</head>
+<body>
+    
+  <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+
+    <div class="container mt-3">
+       
+        <div class="row">
+                    
+            <div class="col-md-12 mt-3">
+                <form method="POST">
+
+                        <div class="row mb-3 mt-lg-5">
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" id="name" name="name" value="">
+                            </div>
+                        </div>
+                    
+                      <button type="submit" class="btn btn-primary mt-lg-5">Create Category</button>
+                      <% if (iscreated) { %>
+                        <div class="alert alert-primary mt-3 " id="edit-blog-alert" role="alert">
+                            Category edited successfully
+                          </div>
+                      <% } %>
+                      <% if (iscreated === false) { %>
+                        <div class="alert alert-danger mt-3 " id="edit-blog-alert" role="alert">
+                            Category could not be created
+                          </div>
+                      <% } %>
+                          
+                </form>
+
+
+             </div>
+                
+                    
+        </div>
+    </div>
+
+    
+    
+    
+</body>
+</html>

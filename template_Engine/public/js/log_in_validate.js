@@ -112,11 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
     email.addEventListener("input",() => {
       
 
-        if(email.value.length === 0){
-          console.log(email.value)
+        if(email.value.length === 0 || lastmail.value === -1){
+          console.log("girdi")
           email.classList.remove('is-invalid');
           email.classList.remove('is-valid');}
-
+          
         else{ 
           checkemail(email,lastmail);
         }

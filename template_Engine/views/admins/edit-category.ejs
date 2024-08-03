@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head',title=title) %>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script src="/static/js/alert-timeout.js"></script>
+</head>
+<body>
+    
+  <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+
+    <div class="container mt-3">
+       
+        <div class="row">
+                    
+            <div class="col-md-12 mt-3">
+                <form method="POST">
+
+                        <div class="row mb-3 mt-lg-5">
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" id="name" name="name" value="<%= category.name%>">
+                            </div>
+                        </div>
+                    
+                      <button type="submit" class="btn btn-primary mt-lg-5">Edit Category</button>
+                      <% if (iscreated) { %>
+                        <div class="alert alert-primary mt-3 " id="edit-blog-alert" role="alert">
+                            Category edited successfully
+                          </div>
+                      <% } %>
+                      <% if (iscreated === false) { %>
+                        <div class="alert alert-danger mt-3 " id="edit-blog-alert" role="alert">
+                            Category could not be edited
+                          </div>
+                      <% } %>
+                          
+                </form>
+
+                
+
+             </div>
+                
+                    
+        </div>
+
+        <div class="row">
+
+          <div class="container mt-3">
+            <div class="row">
+                <div class="col-mb-12">
+                    <table class="table table-bordered table-striped">
+                        
+                        <thead>
+                            <tr>
+                                <td style="width: 50px;">id</td>
+                                <td style="width: 200px;">picture</td>
+                                <td>title</td>
+                                <td style="width: 150px;"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% blogs.forEach( (element) => { %>
+                            <tr >
+                                <td>#<%=element.id%></td>
+                                <td>
+            <img src="/static/images/<%=element.picture %>" class="img-fluid" alt=""></td>
+                                
+                                <td><%= element.title %></td>
+                                <td class="align-content-center ">
+                                <a href="/admin/blog/edit/<%= element.id %>" class="btn btn-group-sm btn-primary">edit</a>
+                                <a onclick="deletebuton('<%= element.id %>')" id="delete_button" class="btn btn-group-sm btn-danger">delete<a>
+                                </td>
+                               
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+        </div>
+    
+        </div>
+    </div>
+   
+    <script>
+    function deletebuton(id){
+      if(id == null){
+          return alert("İnvalid Call!");
+      }
+     
+      if(confirm("Are you sure to delete #"+id+" number Category?")){
+         window.location.href = "/admin/category/delete/"+id;
+      }
+  }</script>
+    
+    
+</body>
+</html>

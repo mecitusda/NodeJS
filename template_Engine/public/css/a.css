@@ -1,15 +1,12 @@
 
-a.list-group-item.list-group-item-warning:hover  {
-    background-color: rgb(255, 255, 255) !important;   /* Örnek olarak mavi arka plan rengi */
+a.list-group-item:hover  {
+    background-color: rgba(255, 255, 255, 0.308) ;   /* Örnek olarak mavi arka plan rengi */
 }
 
-.list.group-item-warning.active {
-    background-color: rgb(255, 255, 255) !important;   /* Örnek olarak mavi arka plan rengi */
+a.list-group-item.active:hover{
+   background-color:rgb(102, 77, 3)  !important;
 }
 
-.list.group-item-warning.active:hover {
-    background-color: rgb(0, 0, 0) !important;   /* Örnek olarak mavi arka plan rengi */
-}
 
 
 /* background-color: seashell !important;*/

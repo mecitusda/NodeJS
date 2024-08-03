@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
-   
+ 
     <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
 
     <div class="container mt-3">
@@ -18,24 +18,28 @@
                     
                 </div>
             </div>
+       
 
-
+            
             <div class="col-md-9">
              
                 <h1 class="h3 mb-3"><%=title %></h1>
-                 
-                <% if (blogs.length === 0  ||  (blogs.length === 1 && (!blogs[0].verify || !blogs[0].isvisible))) { %>
+               
+                <% if (blogs.length === 0  ||  (blogs.length !== 0 && (!blogs[0].verify || !blogs[0].isvisible))) { %>
                     <%- include('../partials/no-product') %>
                     <% } %>
+
+                   
+                
                     
-                <%
-                blogs.forEach(function (blog){
+             <%   blogs.forEach(function (blog){
                 %> 
-            
-            <%
+       
+            <% 
+
              if (blog.verify && blog.isvisible ) {
              %>
-              
+             
                <%- include('../partials/blog-card',{blog}) %>
  
                <% } %>

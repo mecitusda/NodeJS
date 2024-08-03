@@ -18,30 +18,25 @@
             <div class="col-mb-12">
                 <table class="table table-bordered table-striped">
                     
-                    <thead class="table-danger">
-                        <tr >
-                            <td style="width: 50px;">id</td>
-                            <td style="width: 200px;">Picture</td>
-                            <td>Title</td>
-                            <td>Category</td>
-                            <td style="width: 150px;"></td>
+                    <thead>
+                        <tr class="table-danger">
+                            <td style="width: 50px;text-align: center;">id</td>
+                            <td >name</td>
+                            <td style="width: 200px;text-align: center;">createdAt</td>
+                            <td style="width: 200px;text-align: center; ">createdAt</td>
+                            <td style="width: 145px;"></td>
                         </tr>
                     </thead>
                     <tbody>
-                        <% blogs.forEach( (element) => { %>
+                        <% categories.forEach( (element) => { %>
                         <tr >
-
                             <td>#<%=element.id%></td>
-                            <td class="align-content-center">
-                            <img src="/static/images/<%=element.picture %>" class="img-fluid" alt=""></td>
+                            <td><%= element.name %></td>
                             
-                            <td class=""><%= element.title %></td>
-                            <td><% element.categories.forEach(element => { %>
-                             <p><%= element.name%></p>
-                            <% }) %></td>
-                            
+                            <td><%= element.createdAt %></td>
+                            <td><%= element.updatedAt %></td>
                             <td class="align-content-center ">
-                            <a href="/admin/blog/edit/<%= element.id %>" class="btn btn-group-sm btn-primary">edit</a>
+                            <a href="/admin/category/edit/<%= element.id %>" class="btn btn-group-sm btn-primary">edit</a>
                             <a onclick="deletebuton('<%= element.id %>')" id="delete_button" class="btn btn-group-sm btn-danger">delete<a>
                             </td>
                            
@@ -63,8 +58,8 @@
                 return alert("İnvalid Call!");
             }
            
-            if(confirm("Are you sure delete #"+id+" number Blog?")){
-               window.location.href = "/admin/blog/delete/"+id;
+            if(confirm("Are you sure to delete this category?")){
+               window.location.href = "/admin/category/delete/"+id;
             }
         }
         

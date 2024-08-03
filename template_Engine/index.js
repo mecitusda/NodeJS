@@ -1,10 +1,16 @@
 const express=require("express");
 const user_routers= require("./routes/user")
 const admin_routers=require("./routes/admin")
-
+const db=require("./config/db")
 var app=express();
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({extended:true}));
 
+const dummy_data = require("./config/dummy-data");
+(async () => {
+    
+    await dummy_data();
+    await db.sync({alter:true});
+})()
 
    
 
@@ -30,15 +36,9 @@ app.use("/static",(req,res,next) => {
 
 app.use("/admin",admin_routers)
 app.use(user_routers)
-const db=require("./config/db")
+
 
 //
-const dummy_data = require("./config/dummy-data");
-(async () => {
-    
-    await dummy_data();
-    await db.sync({alter:true});
-})()
 
    
     
