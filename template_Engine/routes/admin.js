@@ -6,7 +6,7 @@ const controllerAdmin = require("../controllers/admin");
 
 router.get("/blogs",controllerAdmin.blogs)
 
-router.get("/blog/category/:categoryid",controllerAdmin.blogcategory_with_id)
+router.get("/blog/category/:slug",controllerAdmin.blogcategory_with_id)
     
 
 
@@ -23,17 +23,17 @@ router.post("/category/create",controllerAdmin.create_category_post);
 router.post("/blog/create",controllerAdmin.create_blog_post);
 
 
-router.get("/blog/edit/:blogid",controllerAdmin.edit_blog_get);  
+router.get("/blog/edit/:slug",controllerAdmin.edit_blog_get);  
 
-router.get("/category/edit/:categoryid",controllerAdmin.edit_category_get);
+router.get("/category/edit/:slug",controllerAdmin.edit_category_get);
 
-router.post("/category/edit/:categoryid",controllerAdmin.edit_category_post);
+router.post("/category/edit/:slug",controllerAdmin.edit_category_post);
 
-router.post("/blog/edit/:blogid",controllerAdmin.edit_blog_post)  
+router.post("/blog/edit/:slug",controllerAdmin.edit_blog_post)  
 
 router.get("/categories",controllerAdmin.categories)
 
-router.get("/blog/:blogid",controllerAdmin.blog_with_id)
+router.get("/blog/:slug",controllerAdmin.blog_with_id)
 
 
 router.get("/add_admin",controllerAdmin.add_admin_get);
@@ -41,8 +41,9 @@ router.get("/add_admin",controllerAdmin.add_admin_get);
 
 router.post("/add_admin",controllerAdmin.add_admin_post);
 
-
+router.get("/category/delete/:categoryid",controllerAdmin.delete_category)
     
+router.get("/category/remove/:categoryid/:blogid",controllerAdmin.remove_category)
 router.use("/",controllerAdmin.home)
 
 

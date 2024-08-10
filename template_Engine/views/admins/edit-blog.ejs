@@ -50,7 +50,7 @@
                 
                   <div class="row mb-3">
                     <div class="col-sm-11 offset-sm-1">
-                      <button type="submit" class="btn btn-primary">create blog</button></div>
+                      <button type="submit" class="btn btn-primary">edit blog</button></div>
                     
                     <% if (iscreated) { %>
                       <div class="alert alert-primary mt-3 " id="edit-blog-alert" role="alert">
@@ -83,7 +83,7 @@
 
               <div class="row">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="isvisible" name="home" <%=blog.isvisible ?   'checked'   :'' %>>
+                  <input class="form-check-input" type="checkbox" id="isvisible" name="isvisible" <%=blog.isvisible ?   'checked'   :'' %>>
                   <label class="form-check-label" for="isvisible">
                     isvisible
                   </label>
@@ -94,7 +94,7 @@
                 <div class="form-check">
                   <input class="form-check-input" type="checkbox" id="verify" name="verify" <%=blog.verify ?   'checked'   :'' %>>
                   <label class="form-check-label" for="verify">
-                    isvisible
+                    verify
                   </label>
                 </div>
               </div>

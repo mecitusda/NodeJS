@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('../partials/head',title="Home") %>
-    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
          
@@ -29,9 +29,9 @@
 
                 <%})%>
 
-            <% if (blogs.filter(i => i.isvisible).filter(a => a.home).filter(b => b.verify).length > 3) { %>
+            
                 <%- include('../partials/pagination') %>
-                 <% } %>
+               
                 
             </div>
 

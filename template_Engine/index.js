@@ -4,14 +4,16 @@ const admin_routers=require("./routes/admin")
 const db=require("./config/db")
 var app=express();
 app.use(express.urlencoded({extended:true}));
+const slugify = require('./helpers/slugfield');
+const auth = require("./routes/auth");
 
-const dummy_data = require("./config/dummy-data");
+const update_relationShips = require("./config/relationShips");
 (async () => {
     
-    await dummy_data();
+    await update_relationShips();
     await db.sync({alter:true});
 })()
-
+console.log(slugify("Komple Uygulamalı Web Geliştirme"))
    
 
 const path=require("path");
@@ -36,6 +38,7 @@ app.use("/static",(req,res,next) => {
 
 app.use("/admin",admin_routers)
 app.use(user_routers)
+app.use("/account",auth)
 
 
 //

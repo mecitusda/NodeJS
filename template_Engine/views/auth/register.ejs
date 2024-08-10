@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <%- include('../partials/head',title="Blog Sayfası") %>
+    <link rel="stylesheet" href="/static/css/register.css">
+</head>
+<body>
+   
+        
+    <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+            
+    <div class="container login_square border border-5 content"  >
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 mt-xxl-5">
+                <form  class="row g-xxl-4  mt-2  form-container" id="add-admin-form" method="POST">
+                    
+                    <div class="row ">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-7">
+
+                            <label for="validationServer03" class="form-label m-lg-cen write">Usarname</label>
+                            <input type="text" class="form-control bg-body-tertiary write"  id="username" name="username"                          aria-describedby="validationServer03Feedback" required>
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                              Please provide a valid Username.
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-7">
+
+                            <label for="validationServer03" class="form-label m-lg-cen write">Password</label>
+                            <input type="password" class="form-control bg-body-tertiary write"  id="password"  name="password"                        aria-describedby="validationServer03Feedback" required>
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                              Please provide a valid Password.
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+
+
+                        <div class="row">
+                            <div class="col-md-1" ></div>
+                            <div class="col-md-10" >
+                                <label for="validationServerUsername" class="form-label write">Email</label>
+                                    <div class="input-group has-validation write" style="width: 97%;">
+                                        <input type="text" class="form-control bg-body-tertiary write" id="email"  name="email" aria-describedby="inputGroupPrepend3            validationServerUsernameFeedback" required>
+                                        <span class="input-group-text bg-body-tertiary" id="inputGroupPrepend3">
+                                        
+                                        <select class="form-select bg-body-tertiary write" id="email_option"      name="email_option"aria-describedby="validationServer04Feedback" required>
+                                            <option value="-1">bir uzantı seçiniz...</option>
+                                            <option value="@hotmail.com" selected>@hotmail.com</option>
+                                            <option value="@gmail.com">@gmail.com</option>
+                                         </select>
+                                         </span>
+                                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                                         Please choose a Email.
+                                        </div>
+                                    </div>
+
+                            </div>
+                            <div class="col-md-2" style="width: 65%;"></div>
+                        </div>
+                        
+
+                        <div class="row mt-3">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4"><button type="submit" class="btn btn-success " id="buton_add_admin">Add new admin</button></div>
+                            <div class="col-md-4"></div>
+                        </div>
+                        
+
+                    </form>
+                    
+                    <% if (eklendi[0]) { %>
+                        <% if (eklendi[1] == "Kullanıcı başarıyla eklendi.") { %>
+                            <div class="row mt-3">
+                                <div class="alert alert-success" role="alert" id="edit-blog-alert">
+                                    Admin başarıyla eklendi.
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <!-- Admin eklenemediğinde gösterilecek HTML kodu -->
+                            <div class="row mt-3">
+                                <div class="alert alert-warning" role="alert" id="edit-blog-alert">
+                                    Kullanıcı zaten mevcut.
+                                  </div>
+                            </div>
+                  
+                        <% } %>
+                    <% } %>
+                    
+
+
+
+
+
+                           
+                    
+            </div>
+            <div class="col-md-2"></div>
+
+            
+        </div>
+    
+    </div>
+
+    <script src="/static/js/log_in_validate.js"></script>
+    
+    
+</body>
+</html>

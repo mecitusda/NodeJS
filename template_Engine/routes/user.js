@@ -12,12 +12,12 @@ router.use((req, res, next) => {
     next();
 });
 
-router.use("/blog/category/:categoryid",controllerUser.blog_category );
+router.get("/blog/category/:slug",controllerUser.blog_category );
 
-router.use("/blog/:id",controllerUser.blog_with_id);
+router.get("/blog/:slug",controllerUser.blog_with_id);
 
-router.use("/kullanicilar",controllerUser.blogs);
+router.get("/kullanicilar",controllerUser.blogs);
 
-router.use("/", controllerUser.home);
+router.get("/", controllerUser.home);
 
 module.exports = router;

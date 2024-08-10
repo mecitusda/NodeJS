@@ -8,8 +8,11 @@ const tables = {
 exports.blog_category = async (req, res) => {
     try {
         
+        const { page=0 } = req.query;
    
-        const blogs =await tables.blog.findAll({where:{id_category:req.params.categoryid}})
+        const {rows,count} =await tables.blog.findAndCountAll({include:req.params.slug ? {model:tables.category,where:{url:req.params.slug}}:null,limit:parseInt(process.env.PAGE_SIZE),offset:parseInt(process.env.PAGE_SIZE)*page});
+
+
         const categories = await tables.category.findAll({});
         const kullanicilar_id=await tables.pages.findOne({where:{page_name:"kullanicilar"}});
         const nav_items = await tables.navbaritems.findAll({where:{page_id:kullanicilar_id.getDataValue("id")}});
@@ -17,11 +20,14 @@ exports.blog_category = async (req, res) => {
         res.status(200).render("users/users", {
             title: "Kategoriye Göre Bloglar",
             categories: categories,
-            blogs: blogs,
+            blogs: rows,
             nav_items: nav_items,
             who_active: "Home",
-            SelectedCategory: req.params.categoryid,
+            SelectedCategory: req.params.slug,
             main_Page:"",
+            currentPage:page,
+            item_count:count,
+            countPage:Math.ceil(count/parseInt(process.env.PAGE_SIZE))
         });
 
     } catch (err) {
@@ -32,7 +38,7 @@ exports.blog_category = async (req, res) => {
 
 exports.blog_with_id =  async (req, res, next) => {
     try {
-        const blogs = await tables.blog.findOne({where:{id:req.params.id}}).then((blog) => {return blog});
+        const blogs = await tables.blog.findOne({where:{url:req.params.slug}}).then((blog) => {return blog});
         
         const kullanicilar_id=await tables.pages.findOne({where:{page_name:"kullanicilar"}}).then((pages) => {return pages.getDataValue("id")});
 
@@ -57,8 +63,8 @@ exports.blog_with_id =  async (req, res, next) => {
 
 exports.blogs =  async (req, res, next) => {
     try {
-      
-        const blogs = await tables.blog.findAll({where:{verify:1,isvisible:1}});
+        const {page=0} = req.query;
+        const {rows,count} = await tables.blog.findAndCountAll({where:{verify:1,isvisible:1},limit:parseInt(process.env.PAGE_SIZE),offset:parseInt(process.env.PAGE_SIZE)*page});
      
         const categories = await tables.category.findAll({});
        
@@ -67,15 +73,18 @@ exports.blogs =  async (req, res, next) => {
         
         const nav_items = await tables.navbaritems.findAll({where:{page_id:kullanicilar_id}});
        
-        if(blogs)
+        if(rows)
         res.status(200).render("users/users", {
             title: "All Blogs",
             categories: categories,
-            blogs: blogs,
+            blogs: rows,
             nav_items: nav_items,
             who_active: "All Blogs",
             SelectedCategory:null,
-            main_Page:""
+            main_Page:"",
+            currentPage:page,
+            item_count:count,
+            countPage:Math.ceil(count/parseInt(process.env.PAGE_SIZE))
         });
     } catch (err) {
         console.log(err);
@@ -85,8 +94,8 @@ exports.blogs =  async (req, res, next) => {
 
 exports.home = async (req, res, next) => {
     try {
-
-        const blogs = await tables.blog.findAll({where:{verify:1,home:1,isvisible:1}});
+        const { page=0 } = req.query;
+        const {rows,count} = await tables.blog.findAndCountAll({where:{verify:1,home:1,isvisible:1},limit:parseInt(process.env.PAGE_SIZE),offset:parseInt(process.env.PAGE_SIZE)*page});
         const categories = await tables.category.findAll({});
         const home_id=await tables.pages.findOne({where:{page_name:"Home"}}).then((pages) => {return pages.getDataValue("id")});
         const nav_items = await tables.navbaritems.findAll({where:{page_id:home_id}});
@@ -94,11 +103,14 @@ exports.home = async (req, res, next) => {
         res.status(200).render("users/index", {
             title: "Home",
             categories: categories,
-            blogs: blogs,
+            blogs: rows,
             nav_items: nav_items,
             who_active: "index",
             SelectedCategory:null,
-            main_Page:""
+            main_Page:"",
+            currentPage:page,
+            item_count:count,
+            countPage:Math.ceil(count/parseInt(process.env.PAGE_SIZE))
         });
     } catch (err) {
         console.log(err);

@@ -7,6 +7,10 @@ const db = require('../config/db');
       type: DataTypes.STRING,
       allowNull: false
     },
+    url: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     explanation: {
       type: DataTypes.STRING,
       allowNull: false

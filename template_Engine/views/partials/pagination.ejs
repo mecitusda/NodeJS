@@ -1,19 +1,26 @@
 <nav>
+   
     <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a href="" class="page-link">Geri</a>
-        </li>
-        <li class="page-item active">
-            <a href="" class="page-link">1</a>
-        </li>
-        <li class="page-item">
-            <a href="" class="page-link">2</a>
-        </li>
-        <li class="page-item">
-            <a href="" class="page-link">3</a>
-        </li>
-        <li class="page-item">
-            <a href="" class="page-link">İleri</a>
-        </li>
+        <% if (countPage>1) { %>
+            <% if (currentPage!=0) { %>
+                <li class="page-item">
+                    <a href="?page=<%= currentPage-1 %>" class="page-link">Geri</a>
+                </li>
+            <% } %>
+            
+            <% for( let i = 0; i<countPage; i++ ) { %>
+                <li class="page-item">
+                    <a href="?page=<%=i%>" class="page-link <%= (currentPage  == i) ? "active":""  %>"> <%= i+1 %></a>
+                </li>
+            <% } %>
+          <% if (currentPage != countPage-1) { %>
+            <li class="page-item">
+               
+                <a href="?page=<%= ++currentPage  %>" class="page-link">İleri</a>
+            </li>
+          <% } %>
+            
+        <% } %>
+       
     </ul>
 </nav>

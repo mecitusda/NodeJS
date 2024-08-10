@@ -1,0 +1,23 @@
+body{
+
+}
+
+.container{
+    background-color: rgb(255, 0, 0);
+    height:40vh;
+    width: 40vw;
+    margin: 0 auto;
+    margin-top: 25vh;
+}
+
+.content{
+    background-color: rgb(179, 60, 60);
+    color:aliceblue;
+    font-size: x-large;
+}
+
+.input{
+    background-color: rgb(179, 60, 60);
+    color:aliceblue;
+    font-size: x-large;
+}

@@ -6,6 +6,10 @@ const Category = db.define('categories', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  url: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,

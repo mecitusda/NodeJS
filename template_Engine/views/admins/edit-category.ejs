@@ -56,7 +56,7 @@
                                 <td style="width: 50px;">id</td>
                                 <td style="width: 200px;">picture</td>
                                 <td>title</td>
-                                <td style="width: 150px;"></td>
+                                <td style="width: 190px;"></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,8 +68,8 @@
                                 
                                 <td><%= element.title %></td>
                                 <td class="align-content-center ">
-                                <a href="/admin/blog/edit/<%= element.id %>" class="btn btn-group-sm btn-primary">edit</a>
-                                <a onclick="deletebuton('<%= element.id %>')" id="delete_button" class="btn btn-group-sm btn-danger">delete<a>
+                                <a href="/admin/blog/edit/<%= element.url %>" class="btn btn-group-sm btn-primary">edit</a>
+                                <a onclick="deletebuton('<%= element.id%>','<%=category.id %>')" id="delete_button" class="btn btn-group-sm btn-danger">remove blog<a>
                                 </td>
                                
                             </tr>
@@ -85,13 +85,14 @@
     </div>
    
     <script>
-    function deletebuton(id){
-      if(id == null){
+    function deletebuton(blogid,categoryid){
+        
+      if(blogid == null || categoryid == null){
           return alert("İnvalid Call!");
       }
      
-      if(confirm("Are you sure to delete #"+id+" number Category?")){
-         window.location.href = "/admin/category/delete/"+id;
+      if(confirm("Are you sure to remove #"+blogid+" blog from #"+categoryid+" category?")){
+         window.location.href = "/admin/category/remove/"+categoryid+"/"+blogid;
       }
   }</script>
     

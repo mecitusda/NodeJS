@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <%- include('../partials/head',title=title) %>
-    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body>
    
@@ -24,30 +24,32 @@
              
                 <h1 class="h3 mb-3"><%=title %></h1>
                 
-                <% if (blogs.length === 0  ||  (blogs.length !== 0 && !blogs[0].verify)) { %>
+                <% if (blogs.length === 0  ||  (blogs.length === 1 && !blogs[0].verify)) { %>
                     <%- include('../partials/no-product') %>
                     <% } %>
                 
                 <%
                 blogs.forEach(function (blog){
                 %> 
-               
-               
+            
+            
+            
                 
             <%
+            
              if (blog.verify && blog.isvisible) {
              %>
               
-               <%- include('../partials/blog-card',{blog}) %>
+               <%- include('../partials/blog-card',{blog,main_Page}) %>
 
                <% } %>
                 
         <%  
     }) %>
             
-            <% if (blogs.filter(i => i.isvisible).filter(b => b.verify).length > 3) { %>
+       
                 <%- include('../partials/pagination') %>
-                 <% } %>
+               
                 
                
               

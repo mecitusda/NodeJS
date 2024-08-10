@@ -1,0 +1,42 @@
+
+body{
+    background-image: url('../images/register.jpg');
+    background-size: cover;
+}
+
+.content {
+    background-color:rgba(134, 91, 91, 0.247);
+    backdrop-filter: blur(50px);
+    border-radius: 40px;
+    width: 50%;
+}
+
+
+.form-container {
+    
+   
+    /* Bulanıklaştırma efekti */
+    
+    /* Yazı rengini siyah yap */
+}
+
+
+
+
+
+
+
+.login_square{
+    transform: translate(0,50%);    
+    min-height: 400px;
+    
+    
+}
+
+.write{
+    color:rgb(255, 255, 255);
+    background-image: none !important;
+}
+form{
+    background-image:none !important;
+}
