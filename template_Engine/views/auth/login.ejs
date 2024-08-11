@@ -4,37 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/login.css">
-    <title>Document</title>
+    <script src="/static/js/alert-timeout.js"></script>
+    <%- include('../partials/head',title="Blog Sayfası") %>
+    <title>Log In</title>
 </head>
 <body>
 
-    <div class="container mt-3">
-        <div class="row">
+    <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+
+
+    <div class="container  mt-3 containera">
+        <div class="row mt-3">
             <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-5"></div>
-                    <div class="col-md-4">
+                <div class="row mb-3">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text">
                         <h1>Log In</h1>
                     </div>
-                    <div class="col-md-3"></div>
+                    <div class="col-md-4"></div>
                 </div>
+                <form action="" class="mt-xxl-5" id="login-form" method="POST">
+                    <div class="row">
+                        <div class="col-md-2 "></div>
+                        <div class="col-md-7 ">
+                            <label for="validationServer03" class="form-label m-lg-cen text"><h5>Username</h5></label>
+                            <input type="text" class="form-control bg-body-tertiary write"  id="username" name="username"                          aria-describedby="validationServer03Feedback" required>
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                              Please provide a valid Username.
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
 
-                <div class="row">
-                    <div class="col-md-4 content"><h1>Username</h1></div>
-                    <div class="col-md-4 input"></div>
-                    <div class="col-md-4"></div>
+                    <div class="row mt-3">
+                        <div class="col-md-2 "></div>
+                        <div class="col-md-7 ">
+                            <label for="validationServer03" class="form-label m-lg-cen text"><h5>Password</h5></label>
+                            <input type="password" class="form-control bg-body-tertiary write"  id="password" name="password"                          aria-describedby="validationServer03Feedback" required>
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                              Please provide a valid Password.
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-2"></div>
+                            <div class="col-md-5"><button type="submit" class="btn btn-success mt-3" id="buton_add_admin"><h5>Log in</h5></button></div>
+                            <div class="col-md-5"></div>
+                    </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-4"><h1>Password</h1></div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4"></div>
-                </div>
-            </div>
             <div class="col-md-6"></div>
             <div class="col-md-3"></div>
+            
+            <div class="row ">
+                <div class="col-md-12 ">
+                   
+                  <% if (iscreated == "wrongname" ) { %>
+                    <div class="alert alert-danger mt-3" id="edit-blog-alert" role="alert">
+                       <h5>incorrect username!</h5>
+                      </div>
+                  <% } %>
+                <%  if ( iscreated == "wrongpass") { %>
+                 
+                    <div class="alert alert-danger mt-3 " id="edit-blog-alert" role="alert">
+                       <h5>incorrect password!</h5>
+                      </div>
+                 <% } %>
+                </div></div>
+            </div>
         </div>
     </div>
-    
+    <script src="/static/js/log_in_validate.js"></script>
 </body>
 </html>

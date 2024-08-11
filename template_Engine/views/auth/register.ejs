@@ -1,25 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" >
 <head>
-    <%- include('../partials/head',title="Blog Sayfası") %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/register.css">
+    <%- include('../partials/head',title="Blog Sayfası") %>
+    <title>Register</title>
 </head>
 <body>
    
         
     <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
             
-    <div class="container login_square border border-5 content"  >
+    <div class="container login_square   content "  >
+        <div class="row mt-5">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 text"><h1>Register</h1></div>
+            <div class="col-md-4"></div>
+        </div>
         <div class="row">
             <div class="col-md-2"></div>
-            <div class="col-md-8 mt-xxl-5">
-                <form  class="row g-xxl-4  mt-2  form-container" id="add-admin-form" method="POST">
+            <div class="col-md-8 mt-3">
+                <form  class="row g-xxl-4  mt-2  form-container" id="register-form" method="POST">
                     
                     <div class="row ">
                         <div class="col-md-1"></div>
-                        <div class="col-md-7">
+                        <div class="col-md-7 ">
 
-                            <label for="validationServer03" class="form-label m-lg-cen write">Usarname</label>
+                            <label for="validationServer03" class="form-label m-lg-cen text">Usarname</label>
                             <input type="text" class="form-control bg-body-tertiary write"  id="username" name="username"                          aria-describedby="validationServer03Feedback" required>
                             <div id="validationServer03Feedback" class="invalid-feedback">
                               Please provide a valid Username.
@@ -32,7 +40,7 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-7">
 
-                            <label for="validationServer03" class="form-label m-lg-cen write">Password</label>
+                            <label for="validationServer03" class="form-label m-lg-cen text">Password</label>
                             <input type="password" class="form-control bg-body-tertiary write"  id="password"  name="password"                        aria-describedby="validationServer03Feedback" required>
                             <div id="validationServer03Feedback" class="invalid-feedback">
                               Please provide a valid Password.
@@ -45,7 +53,7 @@
                         <div class="row">
                             <div class="col-md-1" ></div>
                             <div class="col-md-10" >
-                                <label for="validationServerUsername" class="form-label write">Email</label>
+                                <label for="validationServerUsername" class="form-label text">Email</label>
                                     <div class="input-group has-validation write" style="width: 97%;">
                                         <input type="text" class="form-control bg-body-tertiary write" id="email"  name="email" aria-describedby="inputGroupPrepend3            validationServerUsernameFeedback" required>
                                         <span class="input-group-text bg-body-tertiary" id="inputGroupPrepend3">
@@ -66,10 +74,10 @@
                         </div>
                         
 
-                        <div class="row mt-3">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4"><button type="submit" class="btn btn-success " id="buton_add_admin">Add new admin</button></div>
-                            <div class="col-md-4"></div>
+                        <div class="row mt-4">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5"><button type="submit" class="btn btn-success " id="buton_add_admin"><h5>register</h5></button></div>
+                            <div class="col-md-6"></div>
                         </div>
                         
 

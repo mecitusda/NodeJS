@@ -1,21 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" >
 <head>
     <%- include('../partials/head',title="Blog Sayfası") %>
     <link rel="stylesheet" href="/static/css/main.css">
-    <link rel="stylesheet" href="/static/css/log_in.css">
+    <link rel="stylesheet" href="/static/css/add-admin.css">
     <script src="/static/js/alert-timeout.js"></script>
 </head>
 <body>
    
         
     <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
-            
-    <div class="container login_square border border-5 content"  >
+    <div class="out">
+        <div class="container  border border-5 content"  >
+        <div class="row mt-5" >
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+
+                <img src="/static/images/add_admin.png" class=" image rounded mx-auto d-block" alt="">
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
         <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 mt-xxl-5">
-                <form  class="row g-xxl-4  mt-2  form-container" id="add-admin-form" method="POST">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 write">
+                <form  class="row  form-container" id="add-admin-form" method="POST">
                     
                     <div class="row ">
                         <div class="col-md-3"></div>
@@ -77,7 +85,8 @@
 
                     </form>
                     
-                    <% if (eklendi[0]) { %>
+                    
+                    <div class="row mt-5"><% if (eklendi[0]) { %>
                         <% if (eklendi[1] == "Kullanıcı başarıyla eklendi.") { %>
                             <div class="row mt-3">
                                 <div class="alert alert-success" role="alert" id="edit-blog-alert">
@@ -94,8 +103,7 @@
                   
                         <% } %>
                     <% } %>
-                    
-
+                    </div>
 
 
 
@@ -103,12 +111,13 @@
                            
                     
             </div>
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
 
             
         </div>
     
-    </div>
+    </div></div>     
+    
 
     <script src="/static/js/log_in_validate.js"></script>
     

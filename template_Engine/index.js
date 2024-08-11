@@ -6,7 +6,7 @@ var app=express();
 app.use(express.urlencoded({extended:true}));
 const slugify = require('./helpers/slugfield');
 const auth = require("./routes/auth");
-
+const cookie = require("cookie-parser");
 const update_relationShips = require("./config/relationShips");
 (async () => {
     
@@ -39,7 +39,7 @@ app.use("/static",(req,res,next) => {
 app.use("/admin",admin_routers)
 app.use(user_routers)
 app.use("/account",auth)
-
+app.use(cookie())
 
 //
 

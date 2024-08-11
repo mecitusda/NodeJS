@@ -2,23 +2,17 @@
 body{
     background-image: url('../images/register.jpg');
     background-size: cover;
+    background-repeat: no-repeat;
 }
 
-.content {
-    background-color:rgba(134, 91, 91, 0.247);
-    backdrop-filter: blur(50px);
+.container.content {
+    background-color:rgba(39, 32, 32, 0.452);
+    backdrop-filter: blur(3px);
     border-radius: 40px;
     width: 50%;
 }
 
 
-.form-container {
-    
-   
-    /* Bulanıklaştırma efekti */
-    
-    /* Yazı rengini siyah yap */
-}
 
 
 
@@ -27,16 +21,21 @@ body{
 
 
 .login_square{
-    transform: translate(0,50%);    
-    min-height: 400px;
+    transform: translate(0,35%);    
+    min-height: 55vh;
     
     
 }
 
 .write{
+    color:rgb(0, 0, 0);
+    background-image: none !important;
+    font-size:larger;
+}
+
+
+.text{
     color:rgb(255, 255, 255);
     background-image: none !important;
-}
-form{
-    background-image:none !important;
+    font-size:larger;
 }

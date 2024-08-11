@@ -367,8 +367,10 @@ exports.home = async (req,res,next) => {
     const categories = await tables.category.findAll({});
     const Admin_id=await tables.pages.findOne({where:{page_name:"Home_Admin"}}).then((pages) => {return pages.getDataValue("id")});
     const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
-   console.log(rows);
-
+    //res.cookie("test",1);
+    //res.clearCookie("test");
+   console.log(req.signedCookies);
+    
     res.render("admins/admin",{
         blogs:rows,
         title:"Admin",
