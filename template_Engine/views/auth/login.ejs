@@ -10,20 +10,21 @@
 </head>
 <body>
 
-    <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+    <%- include('../partials/nav',{who_active,main_Page}) %>
 
 
     <div class="container  mt-3 containera">
-        <div class="row mt-3">
+        <div class="row ">
             <div class="col-md-12">
-                <div class="row mb-3">
+                <div class="row pt-5">
                     <div class="col-md-4"></div>
                     <div class="col-md-4 text">
                         <h1>Log In</h1>
                     </div>
                     <div class="col-md-4"></div>
                 </div>
-                <form action="" class="mt-xxl-5" id="login-form" method="POST">
+                <form action="" class="mt-5" id="login-form" method="POST">
+                    <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
                     <div class="row">
                         <div class="col-md-2 "></div>
                         <div class="col-md-7 ">
@@ -59,13 +60,13 @@
             
             <div class="row ">
                 <div class="col-md-12 ">
-                   
-                  <% if (iscreated == "wrongname" ) { %>
+                 sonuc:  <%= iscreated %>
+                  <% if (iscreated === "wrongname" ) { %>
                     <div class="alert alert-danger mt-3" id="edit-blog-alert" role="alert">
                        <h5>incorrect username!</h5>
                       </div>
                   <% } %>
-                <%  if ( iscreated == "wrongpass") { %>
+                <%  if ( iscreated === "wrongpass") { %>
                  
                     <div class="alert alert-danger mt-3 " id="edit-blog-alert" role="alert">
                        <h5>incorrect password!</h5>

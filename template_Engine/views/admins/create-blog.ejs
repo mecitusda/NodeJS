@@ -7,13 +7,14 @@
 </head>
 <body>
     
-  <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+  <%- include('../partials/nav',{who_active,main_Page}) %>
 
        
   
 
   <div class="container mt-3 ">
     <form method="POST"> 
+      <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
       <div class="row my-5 gx-5">
             
           <div class="col-md-10">

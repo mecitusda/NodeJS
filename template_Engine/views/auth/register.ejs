@@ -10,10 +10,10 @@
 <body>
    
         
-    <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+    <%- include('../partials/nav',{who_active,main_Page}) %>
             
     <div class="container login_square   content "  >
-        <div class="row mt-5">
+        <div class="row pt-5">
             <div class="col-md-4"></div>
             <div class="col-md-4 text"><h1>Register</h1></div>
             <div class="col-md-4"></div>
@@ -22,7 +22,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-8 mt-3">
                 <form  class="row g-xxl-4  mt-2  form-container" id="register-form" method="POST">
-                    
+                    <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
                     <div class="row ">
                         <div class="col-md-1"></div>
                         <div class="col-md-7 ">

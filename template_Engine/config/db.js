@@ -7,8 +7,8 @@ const db =new Sequelize({
     password: process.env.DB_Password,
     host: process.env.DB_Host,
     port: process.env.port1,
-    dialect: process.env.DB_Dialect
-});
+    dialect: process.env.DB_Dialect,
+    storage: "./session.mysql"});
 
 function connectDB(){
     db.authenticate()

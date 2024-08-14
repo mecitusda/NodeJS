@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const csurf = require("csurf");
 const tables = {
     blog : require("../models/blog"),
     category : require("../models/category"),
@@ -8,15 +9,13 @@ const tables = {
    
 
 exports.register_get = async (req, res, next) => {
-    const page=await tables.pages.findOne({where:{page_name:"register"},attributes:["id"]}).then((pages) => {return pages.getDataValue("id")});;
-    const nav_items = await tables.navbaritems.findAll({where:{page_id:page}});
    
-    res.render("../views/auth/register.ejs",{
+       res.render("../views/auth/register.ejs",{
         title: "Register",
         who_active: "Register",
         main_Page:"",
         eklendi: false,
-        nav_items:nav_items,
+       
     });
 }
 
@@ -29,18 +28,19 @@ exports.register_post = async (req, res, next) => {
 }
 
 exports.login_get = async (req, res, next) => {
-    const {iscreated=undefined} = req.query;
-
-    const page=await tables.pages.findOne({where:{page_name:"login"},attributes:["id"]}).then((pages) => {return pages.getDataValue("id")});;
-    const nav_items = await tables.navbaritems.findAll({where:{page_id:page}});
+   
+    const {iscreated=undefined} = req.session;
+   
+    
     res.render("../views/auth/login.ejs",{
         title: "Login",
         who_active: "Log In",
         main_Page:"",
         eklendi: false,
-        nav_items:nav_items,
-        iscreated:iscreated
-    });
+        csurfToken: req.csrfToken(),
+    })
+    delete req.session.iscreated;
+   
 }
 
 exports.login_post = async (req, res, next) => {
@@ -50,12 +50,30 @@ exports.login_post = async (req, res, next) => {
     if(check_name){
       
         const check_pass = await bcrypt.compare(password, check_name.getDataValue("password"));
+        
         if(check_pass){
             
-            return res.redirect("/admin");
+            req.session.isAuth =  true;
+            req.session.username = username;
+            console.log("1")
+            const url = req.query.returnUrl || "/";
+            
+            return res.redirect(url);
         }else{
-            return res.redirect("/account/login?iscreated=wrongpass");
+            req.session.iscreated="wrongpass";
+            console.log("2")
+
+            const url=  (req.query.returnUrl ?"?returnUrl="+req.query.returnUrl:false) || "";
+            return res.redirect("/account/login"+url);
         }
     }
-    return res.redirect("/account/login?iscreated=wrongname");
+    const url=  (req.query.returnUrl ?"?returnUrl="+req.query.returnUrl:false) || "";
+    req.session.iscreated="wrongname";
+    console.log("3")
+    return res.redirect("/account/login"+url);
+}
+
+exports.logout_get = async (req, res, next) => {
+    await req.session.destroy();
+    return res.redirect("/");
 }

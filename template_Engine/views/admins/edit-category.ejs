@@ -7,7 +7,7 @@
 </head>
 <body>
     
-  <%- include('../partials/nav',{nav_items,who_active,main_Page}) %>
+  <%- include('../partials/nav',{who_active,main_Page}) %>
 
     <div class="container mt-3">
        
@@ -15,7 +15,7 @@
                     
             <div class="col-md-12 mt-3">
                 <form method="POST">
-
+                    <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
                         <div class="row mb-3 mt-lg-5">
                             <label for="name" class="col-sm-2 col-form-label">Name</label>
                             <div class="col-sm-8">
@@ -23,7 +23,7 @@
                             </div>
                         </div>
                     
-                      <button type="submit" class="btn btn-primary mt-lg-5">Edit Category</button>
+                     
                       <% if (iscreated) { %>
                         <div class="alert alert-primary mt-3 " id="edit-blog-alert" role="alert">
                             Category edited successfully
@@ -44,7 +44,7 @@
                     
         </div>
 
-        <div class="row">
+        <div class="row mt-5">
 
           <div class="container mt-3">
             <div class="row">
@@ -69,7 +69,7 @@
                                 <td><%= element.title %></td>
                                 <td class="align-content-center ">
                                 <a href="/admin/blog/edit/<%= element.url %>" class="btn btn-group-sm btn-primary">edit</a>
-                                <a onclick="deletebuton('<%= element.id%>','<%=category.id %>')" id="delete_button" class="btn btn-group-sm btn-danger">remove blog<a>
+                     <a onclick="deletebuton('<%= element.url%>','<%=category.url%>','<%=category.id%>')" id="delete_button" class="btn btn-group-sm btn-danger">remove blog<a>
                                 </td>
                                
                             </tr>
@@ -85,14 +85,14 @@
     </div>
    
     <script>
-    function deletebuton(blogid,categoryid){
+    function deletebuton(blogurl,categoryurl,categoryid){
         
-      if(blogid == null || categoryid == null){
+      if(blogurl == null || categoryurl == null){
           return alert("İnvalid Call!");
       }
      
-      if(confirm("Are you sure to remove #"+blogid+" blog from #"+categoryid+" category?")){
-         window.location.href = "/admin/category/remove/"+categoryid+"/"+blogid;
+      if(confirm("Are you sure to remove #"+blogurl+" blog from #"+categoryurl+" category?")){
+         window.location.href = "/admin/category/remove/"+categoryurl+"/"+blogurl;
       }
   }</script>
     
