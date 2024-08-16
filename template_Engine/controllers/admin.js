@@ -1,7 +1,8 @@
 const { Op } = require("sequelize");
 const slug = require("../helpers/slugfield");
-var i=1;
-var a=1;
+const transporter = require("../helpers/mailer");
+const { text } = require("stream/consumers");
+const { type } = require("os");
 const tables = {
     blog : require("../models/blog"),
     category : require("../models/category"),
@@ -11,7 +12,8 @@ const tables = {
 };
 
 exports.blogs = async (req,res,next) => {
-   
+    const message = req.session.message;
+    delete req.session.message;
     const blogs= await tables.blog.findAll(
         {include:{
             model:tables.category,
@@ -55,6 +57,8 @@ exports.blogcategory_with_id = async (req,res,next) => {
     }
 
 exports.create_blog_get = async (req,res,next) => {
+    req.message=req.session.message;
+    delete req.session.message;
     const categories= await tables.category.findAll({});
 
     res.render("admins/create-blog",{   
@@ -73,15 +77,8 @@ exports.delete_blog = async(req,res,next) => {
     }
     
     const delete_blog=await tables.blog.destroy({where:{id:req.params.blogid}});
-    const blogs= await tables.blog.findAll({include:{model:tables.category}});
-
-    return res.render("admins/blog-list",{
-        blogs:blogs,    
-        title:"Blog List",
-        who_active:"All Blogs",
-        main_Page:"admin",
-        SelectedCategory:null
-    })
+    req.session.message={text:"#"+req.params.blogid+" numaralı blog başarıyla silindi.",type:"success"};
+    return res.redirect("/admin/blogs")
     
     
 }
@@ -94,14 +91,9 @@ exports.delete_category = async(req,res,next) => {
     
     const delete_category=await tables.category.destroy({where:{id:req.params.categoryid}});
     const categories= await tables.category.findAll({});
- 
-
-    return res.render("admins/category-list",{
-        categories:categories,    
-        title:"Blog List",
-        who_active:"Blog List",
-        main_Page:"admin",
-    })
+    
+    req.session.message={text:"Kategori başarıyla silindi.",type:"success"};
+    return res.redirect("/admin/categories")
     
 };
 
@@ -121,12 +113,15 @@ exports.create_blog_post = async (req,res,next) => {
         id: {[Op.in]:categoriler}
   }});
    insert_blog.addCategories(selectedCategories);
-}
+}   
+    req.session.message={text:"Blog başarıyla oluşturuldu.",type:"success"};
    
-    res.redirect("/admin/blog/create?variable=${true}");
+    res.redirect("/admin/blog/create");
 }   
 
 exports.edit_blog_get = async(req,res,next) => {
+    const message=req.session.message;
+    delete req.session.message;
     const blog = await tables.blog.findOne({where:{
         url:req.params.slug},
         include:{
@@ -138,7 +133,8 @@ exports.edit_blog_get = async(req,res,next) => {
    
 
     if(!blog){
-        return console.log("Blog bulunamadı.");
+        req.session.message={text:"Blog bulunamadı.",type:"danger"};
+        return req.redirect("/admin/blogs");
     }
 
     res.render("admins/edit-blog",{
@@ -147,58 +143,43 @@ exports.edit_blog_get = async(req,res,next) => {
         who_active:"Blog List",
         main_Page:"admin",
         categories:categories,
-        iscreated:null
-    
+        message:message
     });
 
 
 }
 
 exports.edit_category_get = async(req,res,next) => {
+    const message=req.session.message;
+    delete req.session.message;
     const category = await tables.category.findOne({where:{url:req.params.slug}});
 
     const blogs = await category.getBlogs();
     if(!category){
-        return console.log("Kategori bulunamadı.");
+        req.session.message={text:"Kategori bulunamadı.",type:"danger"};
+        return redirect("/admin/categories");
     }
-  
     res.render("admins/edit-category",{
         blogs:blogs,
         category:category,
-        iscreated:null,
         title:"Edit Category",
         who_active:"Category List",
         main_Page:"admin",
+        message:message
     });
 
 };
 
 exports.edit_category_post = async(req,res,next) => {
     const {name}=req.body;
-    console.log("category_name",name);
-    const update_category=await tables.category.update({name:name},{where:{id:req.params.categoryid}});
-    const category = await tables.category.findByPk(req.params.categoryid);
-    const blogs = await category.getBlogs();
+    const update_category=await tables.category.update({name:name},{where:{url:req.params.slug}});
+   
     if(!update_category){
-        console.log("Kategori güncellenemedi.");
-        return res.render("admins/edit-category",{
-            blogs:blogs,
-            category:category,
-            title:"Edit Category",
-            who_active:"Edit Category",
-            main_Page:"admin",
-            iscreated:true
-        });
+        req.session.message={text:"Kategori güncellenemedi.",type:"danger"};
+        return res.redirect("/admin/categories");
     }
-    res.render("admins/edit-category",{
-        blogs:blogs,
-        category:category,
-        title:"Edit Category",
-        who_active:"Edit Category",
-        main_Page:"admin",
-        iscreated:true
-    });
-    
+    req.session.message={text:"Kategori başarıyla güncellendi.",type:"success"};
+    res.redirect("/admin/categories");
 };
 
 exports.edit_blog_post = async(req,res,next) => {
@@ -242,7 +223,8 @@ exports.edit_blog_post = async(req,res,next) => {
             
         }   
 
-        await blog.save();
+    await blog.save();
+    req.session.message={text:"#"+blog.id+" numaralı blog başarıyla güncellendi.",type:"success"};
     const categories= await tables.category.findAll({});
     }
     res.redirect("/admin/blogs"    
@@ -270,18 +252,13 @@ exports.blog_with_id = async (req,res,next) => {
 }
 
 exports.add_admin_get = async(req,res,next) => {
-   const iscreated = req.session.iscreated || undefined;
-   const message = req.session.message || undefined;
-   if(req.session.iscreated || req.session.message){
-       delete req.session.iscreated;
-       delete req.session.message;}
-
+   const message = req.session.message;
+   delete req.session.message;
     res.render("admins/add-admin",{
         title:"Add Admin",
         who_active:"Add Admin",
         main_Page:"admin",
-        iscreatedt:iscreated,
-        messaget:message
+        message:message
     })
 }
 
@@ -290,80 +267,53 @@ exports.add_admin_post = async(req,res,next) => {
     const {username,email:temp_email,email_option,password}=req.body;
     email=temp_email+email_option;
     const isExist=await tables.users.findOne({where:
-          { [Op.or]: [{username:username},{e_mail:email}]}});
+          {[Op.or]: [{username:username},{e_mail:email}]}});
     
     if(isExist !== null){
-        req.session.message="kullanıcı adı veya email zaten var.";
-        req.session.iscreated=false
+        req.session.message={text:"Kullanıcı adı veya email zaten var.",type:"danger"};
         return res.redirect("/admin/add_admin");
-       /* return res.render("admins/add-admin",{  
-                     title:"Add Admin",
-                     who_active:"Add Admin",
-                     main_Page:"admin",
-                     eklendi:[true,message="kullanıcı adı veya email zaten var."]
-                            })*/
     }   
     const insert_user=await tables.users.create({username:username,e_mail:email,password:password,position:"Admin"});
-    req.session.message="Kullanıcı başarıyla eklendi.";
-    req.session.iscreated=true;
+    transporter.sendMail({
+        from:transporter.options.auth.user,
+        to:email,
+        subject:"Admin kaydı eklendi.",
+        text:"Merhaba "+username+" admin olarak kaydınız yapıldı."
+    });
+    req.session.message={text:"Kullanıcı başarıyla eklendi.",type:"success"};
+    
     res.redirect("/admin/add_admin");
-    /*
-    res.render("admins/add-admin",{
-        title:"Add Admin",
-        who_active:"add_admin",
-        main_Page:"admin",
-        eklendi:[true,message="Kullanıcı başarıyla eklendi."]
-
-    })*/
+ 
 }
 
 exports.home = async (req,res,next) => {
-   /* const {page = 0} = req.query;
-    const {count,rows} = await tables.blog.findAndCountAll({where:{verify:1,home:1,isvisible:1},limit:parseInt(process.env.PAGE_SIZE),offset:parseInt(process.env.PAGE_SIZE)*page});
-    const categories = await tables.category.findAll({});
-    const Admin_id=await tables.pages.findOne({where:{page_name:"Home_Admin"}}).then((pages) => {return pages.getDataValue("id")});
-    const nav_items = await tables.navbaritems.findAll({where:{page_id:Admin_id}});
-    //res.cookie("test",1);
-    //res.clearCookie("test");
-   
-    
-    res.render("admins/admin",{
-        blogs:rows,
-        title:"Admin",
-        nav_items:nav_items,
-        who_active:"",
-        main_Page:"admin",
-        categories:categories,
-        SelectedCategory:null,
-        currentPage:page,
-        item_count:count,
-        countPage:Math.ceil(count/parseInt(process.env.PAGE_SIZE))
-    })
-        */
+ 
     res.redirect("/");
     
 }
 
 exports.categories = async (req,res,next) => {
+    const message=req.session.message;
+    delete req.session.message;
     const categories = await tables.category.findAll({});
     res.render("admins/category-list",{
         categories:categories,
         title:"Admin",
         who_active:"Category List",
-        main_Page:"admin"
+        main_Page:"admin",
+        message:message
     })
 }
 
 exports.create_category_get = async (req,res,next) => {
-    const {iscreated = null } = req.session.package || {};
-    if(iscreated !== null){
-        delete req.session.package;
-    }
+    const message = req.session.message
+    delete req.session.message;
+    
     res.render("admins/create-category",{
         title:"Create Category",
         who_active:"Create Category",
         main_Page:"admin",
-        iscreated:iscreated
+        message:message
     })
 }
 
@@ -372,10 +322,10 @@ exports.create_category_post = async (req,res,next) => {
     const url=slug(name);
     const insert_category=await tables.category.create({name:name,url:url});
     if(!insert_category){
-        req.session.package={iscreated:false};
+        req.session.message={text:"Kategori oluşturulamadı.",type:"danger"};
         return res.redirect("/admin/category/create");
     }
-    req.session.package={iscreated:true};
+    req.session.message={text:"Kategori başarıyla oluşturuldu.",type:"success"};
     res.redirect("/admin/category/create");
 };
 
@@ -383,8 +333,9 @@ exports.delete_category = async(req,res,next) => {
     if(req.params.categoryid === undefined){
         return res.status(404).send("cannot find the category.");
     }
-    console.log("id:",req.params.categoryid);
+    
     const delete_category=await tables.category.destroy({where:{id:req.params.categoryid}});
+    req.session.message={text:req.params.categoryid+" numaralı kategori başarıyla silindi.",type:"success"};
     res.redirect("/admin/categories");
 }
 

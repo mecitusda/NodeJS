@@ -27,6 +27,14 @@ const db = require('../config/db');
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
     allowNull: false,
+  },
+  resetToken: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  resetTokenExpiration: {
+    type: DataTypes.DATE,
+    allowNull: true
   }
 
 }, {

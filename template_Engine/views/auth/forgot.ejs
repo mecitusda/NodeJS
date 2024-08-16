@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <script src="/static/js/alert-timeout.js"></script>
+    <%- include('../partials/head',title="Blog Sayfası") %>
+    <title>Log In</title>
+</head>
+<body>
+
+    <%- include('../partials/nav',{who_active,main_Page}) %>
+
+
+    <div class="container  mt-3 containera">
+        <div class="row pt-5">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 text">
+                        <h1>Şifre Kayboldu</h1>
+                    </div>
+                    <div class="col-md-4"></div>
+        </div>
+       
+        <div class="row pt-2 ">
+        
+            <div class="col-md-12 d-flex justify-content-center" style="font-style: italic;font-size: 15px;color: rgba(240, 248, 255, 0.808);"><p>Şifrenizi mi kaybettiniz? Sorun değil, kurtarmanıza yardımcı olabiliriz.</p></div>
+  
+        </div>
+ 
+        <form action="" class="mt-5" id="forgot-form" method="POST">
+            <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
+            
+        <div class="row">
+
+                
+                   
+                        <div class="col-md-2 "></div>
+                        <div class="col-md-7 ">
+                            <label for="validationServer03" class="form-label m-lg-cen text"><h5>Email</h5></label>
+                            <input type="text" class="form-control bg-body-tertiary write"  id="email" name="email"                          aria-describedby="validationServer03Feedback" required>
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                              Please provide a valid email.
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                  
+        </div>
+   
+        <div class="row mt-3">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-5"><button type="submit" class="btn btn-info btn-outline-dark mt-3" id=""><h5>Şifre Kurtar</h5></button></div>
+                            <div class="col-md-5"></div>
+        </div>
+            
+          </form>
+           
+          <div class="row">
+
+            <% if (message) { %>
+                <div class="container">
+                    <div class="row">   <div class="col-md-12 ">
+                        
+                            <div class="alert alert-<%=message.type %> mt-3" id="edit-blog-alert" role="alert">
+                                <h5><%= message.text %></h5>
+                              </div>
+                      
+                           
+                       
+                       
+                    </div>
+                </div>
+                 
+                </div>
+            
+                <% } %>
+          </div>
+    
+    </div>
+
+
+    
+    <script src="/static/js/log_in_validate.js"></script>
+</body>
+</html>

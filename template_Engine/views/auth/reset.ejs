@@ -13,24 +13,47 @@
     <%- include('../partials/nav',{who_active,main_Page}) %>
             
     <div class="container login_square   content "  >
-        <div class="row pt-5">
-            <div class="col-md-4"></div>
-            <div class="col-md-4 text"><h1>Register</h1></div>
+        <div class="row pt-5 pb-3">
+  
+            <div class="col-md-12 d-flex justify-content-center text"><h1>Change Password</h1></div>
+         
+        </div>
+
+        <div class="row ">
+            <div class="col-md-1"></div>
+            <div class="col-md-7 d-flex justify-content-center">
+                <div class="card mb-3 " style="max-width: 260px; background-color: rgba(37, 24, 48, 0.486) !important;">
+                <div class="row ">
+                    <div class="col-md-3 align-content-center  pe-2 ">
+                        <img src="/static/images/reset.png" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                        <% if (username) { %>
+                            <h5 class="card-title" style="color: aliceblue;"><%= username %></h5>
+                        <% } %>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div></div>
             <div class="col-md-4"></div>
         </div>
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8 mt-3">
-                <form  class="row g-xxl-4  mt-2  form-container" id="register-form" method="POST">
+                <form  class="row g-xxl-4  mt-2  form-container" id="register-form" method="POST" action="/account/reset-password">
                     <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
+                    <input type="hidden" name="username" value="<%=username %>">
                     <div class="row ">
                         <div class="col-md-1"></div>
                         <div class="col-md-7 ">
-
-                            <label for="validationServer03" class="form-label m-lg-cen text">Usarname</label>
+                            
+                            <label for="validationServer03" class="form-label m-lg-cen text">Password</label>
                             <input type="text" class="form-control bg-body-tertiary write"  id="username" name="username"                          aria-describedby="validationServer03Feedback" required>
                             <div id="validationServer03Feedback" class="invalid-feedback">
-                              Please provide a valid Username.
+                              Please provide a valid Password.
                             </div>
                         </div>
                         <div class="col-md-4"></div>
@@ -40,53 +63,32 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-7">
 
-                            <label for="validationServer03" class="form-label m-lg-cen text">Password</label>
+                            <label for="validationServer03" class="form-label m-lg-cen text">Confirm</label>
                             <input type="password" class="form-control bg-body-tertiary write"  id="password"  name="password"                        aria-describedby="validationServer03Feedback" required>
                             <div id="validationServer03Feedback" class="invalid-feedback">
-                              Please provide a valid Password.
+                              Please Confirm the Password.
                             </div>
                         </div>
                         <div class="col-md-4"></div>
                     </div>
 
 
-                        <div class="row">
-                            <div class="col-md-1" ></div>
-                            <div class="col-md-10" >
-                                <label for="validationServerUsername" class="form-label text">Email</label>
-                                    <div class="input-group has-validation write" style="width: 97%;">
-                                        <input type="text" class="form-control bg-body-tertiary write" id="email"  name="email" aria-describedby="inputGroupPrepend3            validationServerUsernameFeedback" required>
-                                        <span class="input-group-text bg-body-tertiary" id="inputGroupPrepend3">
-                                        
-                                        <select class="form-select bg-body-tertiary write" id="email_option"      name="email_option"aria-describedby="validationServer04Feedback" required>
-                                            <option value="-1">bir uzantı seçiniz...</option>
-                                            <option value="@hotmail.com" selected>@hotmail.com</option>
-                                            <option value="@gmail.com">@gmail.com</option>
-                                         </select>
-                                         </span>
-                                        <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                                         Please choose a Email.
-                                        </div>
-                                    </div>
-
-                            </div>
-                            <div class="col-md-2" style="width: 65%;"></div>
-                        </div>
+                        
                         
 
                         <div class="row mt-4">
                             <div class="col-md-1"></div>
-                            <div class="col-md-5"><button type="submit" class="btn btn-success " id="buton_add_admin"><h5>register</h5></button></div>
+                            <div class="col-md-5"><button type="submit" class="btn btn-dark btn-outline-light " id="buton_add_admin"><h5>Change Password</h5></button></div>
                             <div class="col-md-6"></div>
                         </div>
                         
 
-                    </form>
+                </form>
                     
                       
                         <% if (message) { %>
                             <div class="row mt-3">
-                                <div class="alert alert-<%= message.type%>" role="alert" id="edit-blog-alert">
+                                <div class="alert alert-<%=message.type%>" role="alert" id="edit-blog-alert">
                                     <%= message.text %>
                                 </div>
                             </div>

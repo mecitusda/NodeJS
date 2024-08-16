@@ -51,8 +51,10 @@
                     
                     <div class="row mt-3">
                         <div class="col-md-2"></div>
-                            <div class="col-md-5"><button type="submit" class="btn btn-success mt-3" id="buton_add_admin"><h5>Log in</h5></button></div>
-                            <div class="col-md-5"></div>
+                        <div class="col-md-5">
+                            <button type="submit" class="btn btn-success mt-3"id="buton_add_admin"><h5>Log in</h5></button>
+                        </div>
+                        <div class="col-md-5 align-content-center"><a href="/account/forgot-password" class="link">Şifrenizi mi unuttunuz?</a></div>
                     </div>
                 </div>
             <div class="col-md-6"></div>
@@ -60,16 +62,10 @@
             
             <div class="row ">
                 <div class="col-md-12 ">
-                 sonuc:  <%= iscreated %>
-                  <% if (iscreated === "wrongname" ) { %>
-                    <div class="alert alert-danger mt-3" id="edit-blog-alert" role="alert">
-                       <h5>incorrect username!</h5>
-                      </div>
-                  <% } %>
-                <%  if ( iscreated === "wrongpass") { %>
-                 
-                    <div class="alert alert-danger mt-3 " id="edit-blog-alert" role="alert">
-                       <h5>incorrect password!</h5>
+                  
+                 <% if (message) { %>
+                    <div class="alert alert-<%=message.type %> mt-3" id="edit-blog-alert" role="alert">
+                        <h5><%= message.text %></h5>
                       </div>
                  <% } %>
                 </div></div>

@@ -1,4 +1,4 @@
-<a href="javascript:void(0);" class="list-group-item list-group-item-dark disabled" style="background-color: #CED4DA;">Tüm Kategoriler</a>
+<a href="javascript:void(0);" class="list-group-item list-group-item-dark disabled" style="background-color: #CED4DA;">All Categories</a>
 <% categories.forEach(function (categories){ %>
     <a href="<%=directory_menu+categories.url %>"  class="list-group-item list-group-item-warning <%= categories.url == SelectedCategory ? 'active':''%>" > <%= categories.name %> </a>
     

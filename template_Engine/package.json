@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.10.1",
+    "node-mailer": "^0.1.1",
     "sequelize": "^6.37.3",
     "slugify": "^1.6.6"
   },

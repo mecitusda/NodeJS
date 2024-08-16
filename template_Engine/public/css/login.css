@@ -37,4 +37,13 @@ background-repeat: no-repeat;
 .text{
     color:aliceblue;
     font-size: x-large;
+
+}
+
+.link{
+    font-size: large;
+    color: aliceblue;
+}
+.link:hover{
+    color: rgba(255, 255, 255, 0.644);
 }

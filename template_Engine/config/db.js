@@ -1,3 +1,4 @@
+const { format } = require('path');
 const { Sequelize } = require('sequelize');
 
 require('dotenv').config();
@@ -8,7 +9,13 @@ const db =new Sequelize({
     host: process.env.DB_Host,
     port: process.env.port1,
     dialect: process.env.DB_Dialect,
-    storage: "./session.mysql"});
+    storage: "./session.mysql",
+    email:{
+            username:process.env.EMAIL_USER,
+            password:process.env.EMAIL_PASSWORD,
+            from:process.env.EMAIL_USER,
+        }
+   } );
 
 function connectDB(){
     db.authenticate()

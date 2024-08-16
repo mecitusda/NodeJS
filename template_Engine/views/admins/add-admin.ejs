@@ -86,29 +86,16 @@
                     </form>
                     
                     
-                    <div class="row mt-5">
-                        
-                        <% if (typeof iscreatedt != 'undefined') { %>
-                         
-                   
+                    <div class="row mt-5" style="min-height: 10vh;">
 
-                        <% if (iscreated) { %>
-                         
+                        <% if (message) { %>
                             <div class="row mt-3">
-                                <div class="alert alert-success" role="alert" id="edit-blog-alert">
-                                  <% messaget %>
+                                <div class="alert alert-<%=message.type%>" role="alert" id="edit-blog-alert">
+                                  <%= message.text %>
                                 </div>
                             </div>
-                        <% } else { %>
-                            <!-- Admin eklenemediğinde gösterilecek HTML kodu -->
-                            <div class="row mt-3">
-                                <div class="alert alert-warning" role="alert" id="edit-blog-alert">
-                                    <% messaget %>
-                                  </div>
-                            </div>
-                  
                         <% } %>
-                        <% } %>
+                    
                     </div>
 
 

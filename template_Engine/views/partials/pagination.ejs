@@ -4,7 +4,7 @@
         <% if (countPage>1) { %>
             <% if (currentPage!=0) { %>
                 <li class="page-item">
-                    <a href="?page=<%= currentPage-1 %>" class="page-link">Geri</a>
+                    <a href="?page=<%= currentPage-1 %>" class="page-link">Back</a>
                 </li>
             <% } %>
             
@@ -16,7 +16,7 @@
           <% if (currentPage != countPage-1) { %>
             <li class="page-item">
                
-                <a href="?page=<%= ++currentPage  %>" class="page-link">İleri</a>
+                <a href="?page=<%= ++currentPage  %>" class="page-link">Forward</a>
             </li>
           <% } %>
             
