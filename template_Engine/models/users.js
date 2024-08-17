@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const db = require('../config/db');
 
-  const User = db.define('users', {
+  const user = db.define('user', {
   username: {
     type: DataTypes.STRING,
     allowNull: false
@@ -38,9 +38,9 @@ const db = require('../config/db');
   }
 
 }, {
-  tableName: 'users', // Veritabanında mevcut olan tablo adı
+  tableName: 'user', // Veritabanında mevcut olan tablo adı
   freezeTableName: true, // Tablonun adının otomatik olarak çoğul yapılmasını engeller
   timestamps: true // createdAt ve updatedAt alanlarını devre dışı bırakır
 });
-User.sync({ alter: true });
-module.exports = User;
+
+module.exports = user;

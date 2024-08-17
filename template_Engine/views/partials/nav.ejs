@@ -9,9 +9,7 @@
                 </li>
     
     
-                <li class="nav-item">
-                    <a href="/admin/blog/create" class="nav-link <%= who_active=="Create Blog" ? 'active' : '' %>">Create Blog</a>
-                </li>
+              
     
     
                 <li class="nav-item">
@@ -24,8 +22,31 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="/admin/roles" class="nav-link <%= who_active=="Roles" ? 'active' : '' %>">Role List</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/users" class="nav-link <%= who_active=="Users" ? 'active' : '' %>">User List</a>
+                </li>
+
+                <li class="nav-item ">
+                    <a href="/admin/user/create" class="nav-link <%= who_active=="Add Admin" ? 'active' : '' %>">Create User</a>
+                </li>
+
+                
+                <li class="nav-item">
+                    <a href="/admin/blog/create" class="nav-link <%= who_active=="Create Blog" ? 'active' : '' %>">Create Blog</a>
+                </li>
+
+                
+                <li class="nav-item">
                     <a href="/admin/category/create" class="nav-link <%= who_active=="Create Category" ? 'active' : '' %>">Create Category</a>
                 </li>
+                
+                <li class="nav-item">
+                    <a href="/admin/role/create" class="nav-link <%= who_active=="Create Role" ? 'active' : '' %>">Create Role</a>
+                </li>
+                
           
             <% } else { %>
                 <li class="nav-item">
@@ -42,10 +63,7 @@
                     <a href="#" class="nav-link disabled"><%= username %></a>
                 </li>
 
-                <li class="nav-item ">
-                    <a href="/admin/add_admin" class="nav-link <%= who_active=="Add Admin" ? 'active' : '' %>">Add Admin</a>
-                </li>
-
+                
                 
                 <li class="nav-item">
                     <a href="/account/logout" class="nav-link">Log Out</a>

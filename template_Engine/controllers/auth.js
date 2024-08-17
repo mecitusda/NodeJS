@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const csurf = require("csurf");
 const transporter = require("../helpers/mailer");
 const crypto = require("crypto");
+const { raw } = require("mysql2");
 const tables = {
     blog : require("../models/blog"),
     category : require("../models/category"),
@@ -73,7 +74,11 @@ exports.login_post = async (req, res, next) => {
         const check_pass = await bcrypt.compare(password, check_name.getDataValue("password"));
         
         if(check_pass){
-            
+            const roles = await check_name.getRoles({attributes:["rolename"],raw:true});
+           
+            req.session.roles = roles.map(role => role["rolename"]);
+            console.log("başlangıç",req.session.roles);
+            req.session.userId = check_name.id;
             req.session.isAuth =  true;
             req.session.username = username;
           

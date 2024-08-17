@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head',title=title) %>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script src="/static/js/alert-timeout.js"></script>
+</head>
+<body>
+    
+  <%- include('../partials/nav',{who_active,main_Page}) %>
+
+    <div class="container mt-3">
+          
+        <div class="row">
+                    
+            <div class="col-md-12 mt-3">
+                <form method="POST">
+                    <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
+                        <div class="row mb-3 mt-lg-5">
+                            <input type="hidden" name="_roleid" value="<%= role.id %>">
+                            <label for="name" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                               <input type="text" class="form-control" id="rolename" name="_rolename" value="<%= role.rolename%>">
+                            </div>
+                            
+                        </div>
+                        <div class="row mb-3 ">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary">edit role</button>
+                            </div>
+                            <div class="col-md-6"></div>
+                      
+                    
+                        </div>
+                     
+                      <% if (message) { %>
+                        <div class="alert alert-<%=message.type%> mt-3 " id="edit-blog-alert" role="alert">
+                            <%= message.text %>
+                          </div>
+                      <% } %>
+                      
+                          
+                </form>
+
+                
+
+             </div>
+                
+                    
+        </div>
+
+        <div class="row mt-5">
+
+          <div class="container mt-3">
+            <div class="row">
+                <div class="col-mb-12">
+                    <table class="table table-bordered table-striped">
+                        
+                        <thead>
+                            <tr>
+                                <td style="width: 50px;">id</td>
+                                <td style="width: 200px;">Username</td>
+                                <td>Email</td>
+                                <td style="width: 190px;"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% role.users.forEach( (element) => { %>
+                            <tr >
+                                <td>#<%=element.id%></td>
+                                <td><%= element.username %></td>
+                                
+                                <td><%= element.e_mail %></td>
+                                <td class="align-content-center ">
+                                <a href="/admin/user/edit/<%= element.id %>" class="btn btn-group-sm btn-primary">edit</a>
+                                <form method="POST" style="display: inline-block;" action="/admin/role/remove">
+                                    <input type="hidden" name="_csrf" value="<%=csurfToken %>">
+                                    <input type="hidden" name="_roleid" value="<%= role.id %>">
+                                    <input type="hidden" name="_userid" value="<%= element.id %>">
+
+                            <button type="submit" class="btn btn-group-sm btn-danger" >remove user</button>
+                                </form>
+                
+                                </td>
+                               
+                            </tr>
+
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        
+        </div>
+    
+        </div>
+    </div>
+   
+    
+    
+</body>
+</html>

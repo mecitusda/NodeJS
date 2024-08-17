@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/libs/bootstrap/dist/css/bootstrap.min.css">
-    <%- include('../partials/head',title="Blog List") %>
+    <script src="/static/js/alert-timeout.js"></script>
+    <title>User List</title>
     
 </head>
 <body>
@@ -14,7 +15,8 @@
     <%- include('../partials/nav',{who_active,main_Page}) %>
 
     <div class="container mt-3">
-        <div class="row"> <% if (message) { %>
+        <div class="row"> 
+            <% if (message) { %>
             <div class="alert alert-<%=message.type%> mt-3 " id="edit-blog-alert" role="alert">
                 <%= message.text %>
               </div>
@@ -27,28 +29,38 @@
                     <thead class="table-danger">
                         <tr >
                             <td style="width: 50px;"><h5>id</h5></td>
-                            <td style="width: 200px;"><h5>Picture</h5></td>
-                            <td><h5>Title</h5></td>
-                            <td><h5>Category</h5></td>
+                            <td style="width: 200px;"><h5>Username</h5></td>
+                            <td><h5>Email</h5></td>
+                            <td><h5>Roles</h5></td>
                             <td style="width: 150px;"></td>
                         </tr>
                     </thead>
                     <tbody>
-                        <% blogs.forEach( (element) => { %>
+                        <% users.forEach( (element) => { %>
                         <tr >
 
                             <td>#<%=element.id%></td>
-                            <td class="align-content-center">
-                            <img src="/static/images/<%=element.picture %>" class="img-fluid" alt=""></td>
+                            <td class=""><%= element.username %></td>
                             
-                            <td class=""><%= element.title %></td>
-                            <td><% element.categories.forEach(element => { %>
-                             <p><%= element.name%></p>
-                            <% }) %></td>
+                            <td ><%= element.e_mail %></td>
+                            <td>
+                                <% element.roles.forEach(function(role, index) { %>
+                                    <%=role.rolename%>
+                                    <% if (index < element.roles.length - 1) { %>
+                                    , 
+                                    <% } else { %>
+                                    .
+                                    <% } %>
+                                <% }); %>
+                            </td>
                             
-                            <td class="align-content-center ">
-                            <a href="/admin/blog/edit/<%= element.url %>" class="btn btn-group-sm btn-primary">edit</a>
-                            <a onclick="deletebuton('<%= element.id %>')" id="delete_button" class="btn btn-group-sm btn-danger">delete<a>
+                            <td >
+                            <a href="/admin/user/edit/<%= element.id %>" class="btn btn-group-sm btn-primary" >edit</a>
+                            <form action="/admin/user/delete" method="POST" style="display: inline-block;">
+                                <input type="hidden" name="_csrf" value="<%=csurfToken %>">
+                                <input type="hidden" name="_userid" value="<%= element.id %>">
+                                <button type="submit" class="btn btn-group-sm btn-danger">delete</button>
+                            </form> 
                             </td>
                            
                         </tr>

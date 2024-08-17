@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head',title=title) %>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script src="/static/js/alert-timeout.js"></script>
+    
+</head>
+<body>
+    
+  <%- include('../partials/nav',{who_active,main_Page}) %>
+
+    <div class="container mt-3 border border-2">
+        <% if (message) { %>
+            <div class="alert alert-<%=message.type%> mt-3 " id="edit-blog-alert" role="alert">
+                <%= message.text %>
+              </div>
+          <% } %>
+      <form method="POST"> 
+        <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
+        <input type="hidden" name="_userid" value="<%= user.id %>"><!-- name should be _method -->
+        <div class="row my-5 gx-5">
+              
+            <div class="col-md-10">
+            
+                <div class="row mb-3">
+                    <label for="baslik" class="col-sm-1 col-form-label">Username</label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="username" name="_username" value="<%= user.username%>">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="resim" class="col-sm-1 col-form-label">Email</label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="email" name="_email" value="<%= user.e_mail %>">
+                    </div>
+                </div>
+
+                
+
+                
+                <div class="row mb-3">
+                    <div class="col-sm-11 offset-sm-1">
+                      <button type="submit" class="btn btn-primary">edit user</button>
+                    </div>
+                </div>
+   
+            </div>
+          
+            <div class="col-md-2"> 
+            
+              <div class="row  pt-3">
+               
+                
+                <% roles.forEach(role => { %>
+
+                    <div class="form-check">
+                      <input class="form-check-input"
+                      type="checkbox" 
+                      id="role_<%=role.id%>" 
+                      name="roles[]" 
+                      value="<%= role.id %>"
+                        <%= user.roles.some( cat => cat.id==role.id )?"checked":""%>>
+                      <label class="form-check-label" for="category_<%=role.id%>">
+                          <%= role.rolename %>
+                      </label>
+                    
+                    </div>
+                <% }) %>
+           
+              </div>
+          
+            </div>
+          
+        </div>
+      </form>
+    
+
+    </div>
+
+
+    
+</body>
+</html>

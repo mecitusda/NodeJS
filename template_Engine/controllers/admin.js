@@ -1,27 +1,33 @@
 const { Op } = require("sequelize");
 const slug = require("../helpers/slugfield");
 const transporter = require("../helpers/mailer");
-const { text } = require("stream/consumers");
-const { type } = require("os");
+
+const db = require("../config/db");
+const { del } = require("postman-request");
+
 const tables = {
     blog : require("../models/blog"),
     category : require("../models/category"),
     navbaritems : require("../models/navbaritems"),
     pages : require("../models/pages"),
-    users : require("../models/users")
+    users : require("../models/users"),
+    roles : require("../models/role")
 };
 
 exports.blogs = async (req,res,next) => {
     const message = req.session.message;
     delete req.session.message;
+    const isModerator = req.session.roles.includes("moderator");
+    const isAdmin = req.session.roles.includes("admin");
+    
     const blogs= await tables.blog.findAll(
         {include:{
             model:tables.category,
-            attributes:["name"]
-        }});
+            attributes:["name"],}
+            ,
+            where:isModerator && !isAdmin ? {userId:req.session.userId} : null // its cancel the line if the condition is false
+            });
     
-
-    const Admin_id=await tables.pages.findOne({where:{page_name:"admin_Create_Blog"}}).then((pages) => {return pages.getDataValue("id")});
         
      
 
@@ -225,7 +231,7 @@ exports.edit_blog_post = async(req,res,next) => {
 
     await blog.save();
     req.session.message={text:"#"+blog.id+" numaralı blog başarıyla güncellendi.",type:"success"};
-    const categories= await tables.category.findAll({});
+    
     }
     res.redirect("/admin/blogs"    
 );
@@ -251,10 +257,10 @@ exports.blog_with_id = async (req,res,next) => {
     res.status(200).redirect("/");
 }
 
-exports.add_admin_get = async(req,res,next) => {
+exports.create_user_get = async(req,res,next) => {
    const message = req.session.message;
    delete req.session.message;
-    res.render("admins/add-admin",{
+    res.render("admins/create-user",{
         title:"Add Admin",
         who_active:"Add Admin",
         main_Page:"admin",
@@ -262,7 +268,7 @@ exports.add_admin_get = async(req,res,next) => {
     })
 }
 
-exports.add_admin_post = async(req,res,next) => {
+exports.create_user_post = async(req,res,next) => {
     
     const {username,email:temp_email,email_option,password}=req.body;
     email=temp_email+email_option;
@@ -282,7 +288,7 @@ exports.add_admin_post = async(req,res,next) => {
     });
     req.session.message={text:"Kullanıcı başarıyla eklendi.",type:"success"};
     
-    res.redirect("/admin/add_admin");
+    res.redirect("/admin/user/create");
  
 }
 
@@ -345,4 +351,237 @@ exports.remove_category = async(req,res,next) => {
     await blog.removeCategories(categoryid);
   
     res.redirect("/admin/category/edit/"+{slug:req.params.categoryurl}.slug);
+}
+
+exports.roles = async (req,res,next) => {
+    const message=req.session.message;
+    delete req.session.message;
+    console.log("Message "+message);
+    try{
+        
+        const roles = await tables.roles.findAll({
+            attributes:['id','rolename',[db.fn('COUNT',db.col('users.id')),'user_count'],'createdAt','updatedAt'],
+            include:{
+                model:tables.users,
+                attributes:['id']
+            },
+            group:['role.id'],
+            raw:true
+        });
+        res.render("admins/roles",{
+            roles:roles,
+            title:"Roles",
+            who_active:"Roles",
+            main_Page:"admin",
+            message:message
+        });
+    }
+    catch(err){
+        console.log(err);
+    };
+};
+
+exports.edit_role_get = async (req,res,next) => {
+    const roleid=req.params.slug;
+    const message=req.session.message;
+    delete req.session.message;
+    try{
+        const role = await tables.roles.findOne({where:{id:roleid},
+            include:{
+                model:tables.users,
+                attributes:['id','username','e_mail'],
+                raw:true
+            }
+        });
+        res.render("admins/edit-role",{
+            role:role,
+            title:"Edit Role",
+            who_active:"Roles",
+            main_Page:"admin",
+            message:message
+        });
+
+    }catch(err){
+        console.log(err);
+    }
+};
+
+exports.edit_role_post = async (req,res,next) => {
+    const {_roleid,_rolename}=req.body;
+    try{
+        const update_role = await tables.roles.update({rolename:_rolename},{where:{id:_roleid}});
+        if(!update_role){
+            req.session.message={text:"Rol güncellenemedi.",type:"danger"};
+            return res.redirect("/admin/role/edit/"+_roleid);
+        }
+        req.session.message={text:"Rol başarıyla güncellendi.",type:"success"};
+        res.redirect("/admin/role/edit/"+_roleid);
+    }
+    catch(err){
+        console.log(err);
+    }
+
+    
+};
+
+exports.delete_role = async (req,res,next) => {
+    const roleid=req.params.roleid;
+   
+    try{
+        const delete_role = await tables.roles.destroy({where:{id:roleid}});
+        req.session.message={text:"Rol başarıyla silindi.",type:"success"};
+        res.redirect("/admin/roles");
+        
+    }
+    catch(err){
+        console.log(err);
+    }
+   
+};
+
+exports.remove_role = async (req,res,next) => {
+    const {_roleid,_userid}=req.body;
+    const role = await tables.roles.findByPk(_roleid);
+    await role.removeUsers(_userid);
+    req.session.message={text:"Kullanıcı başarıyla "+role.rolename+" rolünden çıkarıldı.",type:"success"};
+    res.redirect("/admin/role/edit/"+_roleid);
+};
+
+exports.create_role_get = async (req,res,next) => {
+    const message=req.session.message;
+    delete req.session.message;
+ 
+    res.render("admins/create-role",{
+        title:"Create Role",
+        who_active:"Create Role",
+        main_Page:"admin",
+        message:message
+    });
+
+}
+
+exports.create_role_post = async (req,res,next) => {
+    const {_rolename}=req.body;
+    try{
+        const insert_role = await tables.roles.create({rolename:_rolename});
+        if(!insert_role){
+            req.session.message={text:"Rol oluşturulamadı.",type:"danger"};
+            return res.redirect("/admin/role/create");
+        }
+        req.session.message={text:"Rol başarıyla oluşturuldu.",type:"success"};
+        res.redirect("/admin/role/create");
+    }catch(err){
+        console.log(err);
+    }
+}
+
+exports.users_get = async (req,res,next) => {
+    const message=req.session.message;
+    delete req.session.message;
+    try{    
+        const {rows,count} = await tables.users.findAndCountAll({
+            attributes:['id','username','e_mail','createdAt','updatedAt'],
+            include:{model:tables.roles,attributes:['id','rolename']},
+            
+        });
+
+        res.render("admins/user-list",{
+            users:rows,
+            title:"Users",
+            who_active:"Users",
+            main_Page:"admin",
+            message:message,
+            count:count
+        });
+    }catch(err){
+        console.log(err);
+    }
+}
+
+exports.delete_user = async (req,res,next) => {
+    const {_userid}=req.body;
+    try{
+        const delete_user = await tables.users.destroy({where:{id:_userid}});
+        req.session.message={text:"Kullanıcı başarıyla silindi.",type:"success"};
+        res.redirect("/admin/users");}
+    catch(err){
+        console.log(err);
+    }
+
+}
+
+exports.edit_user_get = async (req,res,next) => {
+    const userid=req.params.userid;
+    const message=req.session.message;
+    delete req.session.message;
+    
+    try{
+        const user = await tables.users.findOne({where:{id:userid},
+            include:{
+                model:tables.roles,
+                attributes:['id','rolename'],
+            }
+        });
+        const roles = await tables.roles.findAll({raw:true});
+        res.render("admins/edit-user",{
+            user:user,
+            roles:roles,
+            title:"Edit User",
+            who_active:"Users",
+            main_Page:"admin",
+            message:message
+        });
+    }catch(err){
+        console.log(err);
+    }
+}
+
+
+exports.edit_user_post = async (req,res,next) => {
+    const {_userid,_username,_email}=req.body;
+    const roles = req.body.roles;
+    
+    try{
+        
+        const user = await tables.users.findOne(
+            {where:{id:_userid},
+            include:{
+                model:tables.roles,
+                attributes:["id","rolename"],
+                raw:true
+            }
+        });
+        
+        
+        if(user){
+            user.username=_username;
+            user.e_mail=_email;
+            
+            if(roles === undefined){
+                await user.removeRoles(user.roles);
+            }
+            else{
+                await user.removeRoles(user.roles);
+
+                const selectedRoles = await tables.roles.findAll({where:{
+                    id: {[Op.in]:roles}
+                }});
+
+                await user.addRoles(selectedRoles);
+            
+            }
+            
+           
+            await user.save();
+            req.session.roles = user.roles.map(role => role["rolename"]);
+            console.log("session değiştirildi",req.session.roles,user.roles);
+            req.session.message={text:"Kullanıcı başarıyla güncellendi.",type:"success"};
+            return res.redirect("/admin/user/edit/"+_userid);
+        }
+        req.session.message={text:"Kullanıcı bilgileri değiştirilemedi!",type:"danger"};
+        
+    }catch(err){
+        console.log(err);
+    }
+    res.redirect("/admin/user/edit/"+_userid);
 }
