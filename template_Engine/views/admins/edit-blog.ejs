@@ -11,8 +11,10 @@
   <%- include('../partials/nav',{who_active,main_Page}) %>
 
     <div class="container mt-3 ">
-      <form method="POST"> 
-        <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
+      <form method="POST" enctype="multipart/form-data" action="/admin/blog/edit/<%=blog.url%>?_csrf=<%= csurfToken %>"> <!-- name should be _csrf -->
+
+        <%= blog.url %>
+        <input type="hidden" name="resim" value="<%= blog.picture %>">  
         <div class="row my-5 gx-5">
               
             <div class="col-md-10">
@@ -31,10 +33,13 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
+                <div class="row mb-3 d-flex align-items-center">
                     <label for="resim" class="col-sm-1 col-form-label">Resim</label>
-                    <div class="col-sm-11">
-                        <input type="text" class="form-control" id="resim" name="resim" value="<%= blog.picture %>">
+                    <div class="col-sm-2">
+                      <img src="/static/images/<%= blog.picture %>" alt="" width="150px"></div>
+                    <div class="col-sm-9">
+                        
+                        <input type="file" class="form-control" id="resim" name="resim" value="<%= blog.picture %>">
                     </div>
                 </div>
 

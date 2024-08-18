@@ -62,7 +62,7 @@
                       name="roles[]" 
                       value="<%= role.id %>"
                         <%= user.roles.some( cat => cat.id==role.id )?"checked":""%>>
-                      <label class="form-check-label" for="category_<%=role.id%>">
+                      <label class="form-check-label" for="role_<%=role.id%>">
                           <%= role.rolename %>
                       </label>
                     

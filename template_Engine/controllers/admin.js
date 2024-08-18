@@ -1,9 +1,8 @@
 const { Op } = require("sequelize");
 const slug = require("../helpers/slugfield");
 const transporter = require("../helpers/mailer");
-
 const db = require("../config/db");
-const { del } = require("postman-request");
+const fs = require("fs");
 
 const tables = {
     blog : require("../models/blog"),
@@ -19,13 +18,13 @@ exports.blogs = async (req,res,next) => {
     delete req.session.message;
     const isModerator = req.session.roles.includes("moderator");
     const isAdmin = req.session.roles.includes("admin");
-    
+    console.log("isModerator",isModerator,"isAdmin",isAdmin);
     const blogs= await tables.blog.findAll(
         {include:{
             model:tables.category,
             attributes:["name"],}
             ,
-            where:isModerator && !isAdmin ? {userId:req.session.userId} : null // its cancel the line if the condition is false
+            where:((isModerator && !isAdmin)|| (!isModerator && !isAdmin) ) ? {userId:req.session.userId} : null // its cancel the line if the condition is false
             });
     
         
@@ -103,18 +102,21 @@ exports.delete_category = async(req,res,next) => {
     
 };
 
+
 exports.create_blog_post = async (req,res,next) => {
  
-    const {baslik,aciklama,resim,category,altyazi}=req.body;
+    const {baslik,aciklama,category,altyazi}=req.body;
+    const resim=req.file ? req.file.filename : "default.jpg";
     const verify=req.body.verify == "on" ? true : false;
     const home=req.body.home == "on" ? true : false;
     const isvisible=req.body.isvisible == "on" ? true : false;
     const url=slug(baslik);
     const categoriler=req.body.categories;
-
-    const insert_blog=await tables.blog.create({title:baslik,explanation:aciklama,picture:resim,categoryId:category,home:home,verify:verify,isvisible:isvisible,url:url,subtitle:altyazi});
+    const userId=req.session.userId;
+    const insert_blog=await tables.blog.create({title:baslik,explanation:aciklama,picture:resim,categoryId:category,home:home,verify:verify,isvisible:isvisible,url:url,subtitle:altyazi,userId:userId});
 
     if(categoriler !== undefined){
+
     const selectedCategories = await tables.category.findAll({where:{
         id: {[Op.in]:categoriler}
   }});
@@ -189,16 +191,20 @@ exports.edit_category_post = async(req,res,next) => {
 };
 
 exports.edit_blog_post = async(req,res,next) => {
-    const {baslik,aciklama,resim,altyazi}=req.body;
+    const {baslik,aciklama,altyazi}=req.body;
     const verify=req.body.verify == "on" ? true : false;
     const home=req.body.home == "on" ? true : false;
     const isvisible=req.body.isvisible == "on" ? true : false;
     const categoriler=req.body.categories;
-    
+    let resim = req.body.resim;
+    if(req.file){
+        resim=req.file.filename;
+        fs.unlink("./public/images/"+req.body.resim, (err) => {console.log(err)});
+    }
     
  
 
-    const blog = await tables.blog.findOne({where:{url:req.params.slug},include:{
+    const blog = await tables.blog.findOne({where:{url:req.body.blogid},include:{
         model:tables.category,  //burada bloğun kategorilerini çekiyoruz.
         attributes:["id"]
         }
@@ -539,16 +545,15 @@ exports.edit_user_get = async (req,res,next) => {
 
 exports.edit_user_post = async (req,res,next) => {
     const {_userid,_username,_email}=req.body;
-    const roles = req.body.roles;
-    
+    const role = req.body.roles;
+   
     try{
-        
+        console.log("roles",role);
         const user = await tables.users.findOne(
             {where:{id:_userid},
             include:{
                 model:tables.roles,
-                attributes:["id","rolename"],
-                raw:true
+                attributes:["id","rolename"]
             }
         });
         
@@ -556,15 +561,16 @@ exports.edit_user_post = async (req,res,next) => {
         if(user){
             user.username=_username;
             user.e_mail=_email;
-            
-            if(roles === undefined){
+            console.log("roles",role);
+            if(role == undefined){
                 await user.removeRoles(user.roles);
+                
             }
             else{
                 await user.removeRoles(user.roles);
-
+              
                 const selectedRoles = await tables.roles.findAll({where:{
-                    id: {[Op.in]:roles}
+                    id: {[Op.in]:role}
                 }});
 
                 await user.addRoles(selectedRoles);
@@ -573,8 +579,9 @@ exports.edit_user_post = async (req,res,next) => {
             
            
             await user.save();
+            await user.reload(); 
+            delete req.session.roles
             req.session.roles = user.roles.map(role => role["rolename"]);
-            console.log("session değiştirildi",req.session.roles,user.roles);
             req.session.message={text:"Kullanıcı başarıyla güncellendi.",type:"success"};
             return res.redirect("/admin/user/edit/"+_userid);
         }

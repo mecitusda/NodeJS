@@ -13,7 +13,7 @@
   
 
   <div class="container mt-3 ">
-    <form method="POST"> 
+    <form method="POST" enctype="multipart/form-data"><!-- enctype="multipart/form-data" should be added for upload image--> 
       <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
       <div class="row my-5 gx-5">
             
@@ -36,7 +36,7 @@
               <div class="row mb-3">
                   <label for="resim" class="col-sm-1 col-form-label">Resim</label>
                   <div class="col-sm-11">
-                      <input type="text" class="form-control" id="resim" name="resim" value="">
+                      <input type="file" class="form-control" id="resim" name="resim" value="">
                   </div>
               </div>
 

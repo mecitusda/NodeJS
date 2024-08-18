@@ -51,7 +51,7 @@ exports.register_post = async (req, res, next) => {
 
 exports.login_get = async (req, res, next) => {
    
-    const message = req.session.message;
+    const message = req.session.message || req.cookies.message;
     delete req.session.message;
    
     
@@ -100,8 +100,12 @@ exports.login_post = async (req, res, next) => {
 }
 
 exports.logout_get = async (req, res, next) => {
+    const message = req.session.message;
+    const url = req.query.returnUrl || "/";
     await req.session.destroy();
-    return res.redirect("/");
+    res.cookie("message",message)
+    console.log("çıkış");
+    return res.redirect(url);
 }
 
 exports.forgot_get = async (req, res, next) => {

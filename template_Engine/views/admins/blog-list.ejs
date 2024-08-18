@@ -55,6 +55,10 @@
                         <% }) %>
                     </tbody>
                 </table>
+               
+                <% if (blogs.length === 0) { %>
+                    <div class="alert alert-warning">Üzgünüz size ait bir blog yok.</div>
+                <% } %>
             </div>
         </div>
     
