@@ -1,0 +1,221 @@
+body{
+    height: 100%;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizelegibility;
+    text-size-adjust: none;
+
+}
+
+.container{
+    height: 32vw;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 40px 40px 40px;
+    box-shadow: 10px 10px 20px #ffffffb9,
+                -10px -10px 20px #ffffff5b;
+    border: 5px solid #00000000;
+    border-radius: 10px;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
+}
+
+.child{
+    flex: 1 1 calc(20% - 100px); /* Her elemanın genişliği: toplam %25 - kenar boşlukları */
+    flex-direction: column-reverse;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #666;
+    color: white;
+    font-size: 1.5rem;
+    margin: 5px;
+    height: 3rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.child1{ 
+    flex: 1 1 calc(20% - 20px);
+    justify-content: center;
+    align-items: center;
+    background-color: #666;
+    color: white; 
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    height: 3rem;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+
+}
+.child3{ flex: 1 1 calc(45% - 20px);
+    justify-content: center;
+    align-items: center;
+    background-color: #666;
+    color: white; 
+    font-size: 1.5rem;
+    margin: 5px;    
+    height: 3rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;}
+
+.input{
+    flex: 1 1 calc(100%); /* Her elemanın genişliği: toplam %25 - kenar boşlukları */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: rgb(255, 255, 255);
+    font-size: 4.5rem;
+    margin: 5px;
+    height: 3rem;
+   
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color:transparent !important;
+}
+
+.btn{
+    border-color: aliceblue;
+    background-color:#00000038 !important;
+}
+
+
+
+#shimmerWave {
+    color: #46afc8;
+    font-size: 4rem;
+    font-family: 'Open-Sans', sans-serif;
+    font-weight: 600;
+    perspective: 80px;
+    transform-style: preserve-3d;
+}
+
+#shimmerWave span {
+    position: relative;
+    transition: all .3s ease;
+    display: inline-block;
+    animation: wave 2.4s ease infinite;
+    letter-spacing: 0.01em;
+    transform-origin: 100% 50%;
+    transform-style: preserve-3d;
+}
+
+#shimmerWave span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+#shimmerWave span:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+#shimmerWave span:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+#shimmerWave span:nth-child(4) {
+    animation-delay: 0.15s;
+}
+
+#shimmerWave span:nth-child(5) {
+    animation-delay: 0.2s;
+}
+
+#shimmerWave span:nth-child(6) {
+    animation-delay: 0.25s;
+}
+
+#shimmerWave span:nth-child(7) {
+    animation-delay: 0.3s;
+}
+
+#shimmerWave span:nth-child(8) {
+    animation-delay: 0.35s;
+}
+
+#shimmerWave span:nth-child(9) {
+    animation-delay: 0.4s;
+}
+
+#shimmerWave span:nth-child(10) {
+    animation-delay: 0.45s;
+}
+
+#shimmerWave span:nth-child(11) {
+    animation-delay: 0.5s;
+}
+
+#shimmerWave span:nth-child(12) {
+    animation-delay: 0.55s;
+}
+
+#shimmerWave span:nth-child(13) {
+    animation-delay: 0.6s;
+}
+
+#shimmerWave span:nth-child(14) {
+    animation-delay: 0.65s;
+}
+
+#shimmerWave span:nth-child(15) {
+    animation-delay: 0.7s;
+}
+
+#shimmerWave span:nth-child(16) {
+    animation-delay: 0.75s;
+}
+
+#shimmerWave span:nth-child(17) {
+    animation-delay: 0.8s;
+}
+
+#shimmerWave span:nth-child(18) {
+    animation-delay: 0.85s;
+}
+
+#shimmerWave span:nth-child(19) {
+    animation-delay: 0.9s;
+}
+
+@keyframes wave {
+    0% {
+        transform: translate3D(0, 0, 0) scale(1) rotateY(0);
+        color: #46afc8;
+        text-shadow: 0 0 0 rgba(70, 175, 200, 0);
+    }
+
+    12% {
+        transform: translate3D(2px, -2px, 2px) scale(1.16) rotateY(6deg);
+        color: rgba(160, 235, 255, 1);
+    }
+
+    15% {
+        text-shadow: 0 0 2px rgba(120, 205, 225, 1);
+    }
+
+    24% {
+        transform: translate3D(0, 0, 0) scale(1) rotateY(0);
+        color: rgba(80, 175, 200, 1);
+        opacity: 1;
+    }
+
+    36% {
+        transform: translate3D(0, 0, 0) scale(1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: .8;
+    }
+}
