@@ -37,7 +37,7 @@ exports.register_post = async (req, res, next) => {
         }
     
         const user=await tables.users.create({username:username,position:"kullanici",e_mail:email,password:password});
-        req.session.message={text:"Başarıyla kayıt olunmuştur.",type:"success"};
+        req.session.message={text:"Başarıyla kayıta olunmuştur.",type:"success"};
         transporter.sendMail({
             from:transporter.options.auth.user,
             to:email,
