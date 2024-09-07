@@ -13,8 +13,8 @@
   
 
   <div class="container mt-3 ">
-    <form method="POST" enctype="multipart/form-data"><!-- enctype="multipart/form-data" should be added for upload image--> 
-      <input type="hidden" name="_csrf" value="<%=csurfToken %>"><!-- name should be _csrf -->
+    <form method="POST" enctype="multipart/form-data" action="/admin/blog/create?_csrf=<%= csurfToken %>"><!-- enctype="multipart/form-data" should be added for upload image--> 
+      <!-- name should be _csrf -->
       <div class="row my-5 gx-5">
             
           <div class="col-md-10">
@@ -22,21 +22,21 @@
               <div class="row mb-3">
                   <label for="baslik" class="col-sm-1 col-form-label">Başlık</label>
                   <div class="col-sm-11">
-                      <input type="text" class="form-control" id="baslik" name="baslik" value="">
+                      <input type="text" class="form-control"  id="baslik" name="baslik" value="<%=values?values.title:''%>">
                   </div>
               </div>
               
               <div class="row mb-3">
                   <label for="aciklama" class="col-sm-1 col-form-label">Açıklama</label>
                   <div class="col-sm-11">
-                    <textarea id="editor" name="aciklama" class="form-control" rows="10"></textarea>
+                    <textarea id="editor" name="aciklama"  class="form-control"  rows="10"><%= values?values.explanation:'' %></textarea>
                   </div>
               </div>
 
               <div class="row mb-3">
                   <label for="resim" class="col-sm-1 col-form-label">Resim</label>
                   <div class="col-sm-11">
-                      <input type="file" class="form-control" id="resim" name="resim" value="">
+                      <input type="file" class="form-control" id="resim" name="resim" value="<%= values?values.picture:'' %>">
                   </div>
               </div>
 
@@ -45,7 +45,7 @@
               <div class="row mb-3">
                 <label for="altyazi" class="col-sm-1 col-form-label">Alt Başlık</label>
                 <div class="col-sm-11">
-                  <textarea name="altyazi" class="form-control" rows="10"></textarea>
+                  <textarea name="altyazi" class="form-control" rows="10"><%= values?values.subtitle:'' %></textarea>
                 </div>
             </div>
               
@@ -55,9 +55,9 @@
                   <div class="col-sm-11 offset-sm-1">
                     <button type="submit" class="btn btn-primary">edit blog</button></div>
                   
-                  <% if (message) { %>
-                    <div class="alert alert-<%=message.type%> mt-3 " id="edit-blog-alert" role="alert">
-                        <%= message.text %>
+                  <% if (values) { %>
+                    <div class="alert alert-<%=values.type%> mt-3 " id="edit-blog-alert" role="alert">
+                        <%= values.text %>
                       </div>
                   <% } %>
                 </div>
@@ -73,7 +73,7 @@
             
             <div class="row">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="home" name="home" >
+                <input class="form-check-input" type="checkbox" id="home" name="home" <%= values?(values.home?'checked':'') :'' %>>
                 <label class="form-check-label" for="home">
                     home
                 </label>
@@ -82,7 +82,7 @@
 
             <div class="row">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="isvisible" name="isvisible">
+                <input class="form-check-input" type="checkbox" id="isvisible" name="isvisible" <%= values?(values.isvisible?'checked':''):'' %>>
                 <label class="form-check-label" for="isvisible">
                   isvisible
                 </label>
@@ -91,7 +91,7 @@
 
             <div class="row mb-3">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="verify" name="verify" >
+                <input class="form-check-input" type="checkbox" id="verify" name="verify" <%= values?(values.verify ? 'checked':''):'' %>>
                 <label class="form-check-label" for="verify">
                   verify
                 </label>
@@ -108,7 +108,14 @@
                     id="category_<%=category.id%>" 
                     name="categories[]" 
                     value="<%= category.id %>"
-                >
+                    <% if (values) { %>
+                     <% if (values.categories) { %>
+                      <%= values.categories.some(cat => cat == category.id) ? "checked":"" %> >
+                     <% } %>
+                    <% } %>
+                     
+                   
+                   
                     <label class="form-check-label" for="category_<%=category.id%>">
                         <%= category.name %>
                     </label>

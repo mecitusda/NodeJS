@@ -2,50 +2,79 @@
     <div class="container">
         <a href="/<%=main_Page%>" class="navbar-brand "> Blogapp</a>
         <!-- left-->
-        <ul class="navbar-nav me-auto ">
+        <ul class="navbar-nav me-auto">
             <% if (isAdmin) { %>
                 <li class="nav-item">
-                    <a href="/kullanicilar" class="nav-link <%= who_active=="All Blogs" ? 'active' : '' %>">All Blogs</a>
+                     <a href="/kullanicilar" class="nav-link <%= who_active=="All Blogs" ? 'active' : '' %>">All Blogs</a>
                 </li>
     
     
               
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"   role="button" aria-expanded="false">Lists</a>
+                    <ul class="dropdown-menu">
+                    
+                        <li>
+                            <a href="/admin/blogs" class="dropdown-item <%= who_active=="Blog List" ? 'active' : '' %>">Blog List</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a href="/admin/categories" class="dropdown-item  <%= who_active=="Category List" ? 'active' : '' %>">Category List</a>
+                        </li>
+
+                        
+                        <li>
+                            <a href="/admin/roles" class="dropdown-item <%= who_active=="Roles" ? 'active' : '' %>">Role List</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/admin/users" class="dropdown-item <%= who_active=="Users" ? 'active' : '' %>">User List</a>
+                        </li>
+
+                    </ul>
+                </li>
     
-    
-                <li class="nav-item">
-                    <a href="/admin/blogs" class="nav-link <%= who_active=="Blog List" ? 'active' : '' %>">Blog List</a>
-                </li>
                 
                 
-                <li class="nav-item">
-                    <a href="/admin/categories" class="nav-link <%= who_active=="Category List" ? 'active' : '' %>">Category List</a>
-                </li>
+                
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"   role="button" aria-expanded="false">Create</a>
 
-                <li class="nav-item">
-                    <a href="/admin/roles" class="nav-link <%= who_active=="Roles" ? 'active' : '' %>">Role List</a>
-                </li>
+                    <ul class="dropdown-menu">
+                   
+                    <li>
+                        <a href="/admin/blog/create" class="dropdown-item <%= who_active=="Create Blog" ? 'active' : '' %>">Create Blog</a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    
+                    <li >
+                        <a href="/admin/user/create" class="dropdown-item <%= who_active=="Add Admin" ? 'active' : '' %>">Create User</a>
+                    </li>
+                    <li>
+                        <a href="/admin/category/create" class="dropdown-item <%= who_active=="Create Category" ? 'active' : '' %>">Create Category</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a href="/admin/users" class="nav-link <%= who_active=="Users" ? 'active' : '' %>">User List</a>
-                </li>
+                    <li>
+                        <a href="/admin/role/create" class="dropdown-item <%= who_active=="Create Role" ? 'active' : '' %>">Create Role</a>
+                    </li>
+                    
+                    </ul>
 
-                <li class="nav-item ">
-                    <a href="/admin/user/create" class="nav-link <%= who_active=="Add Admin" ? 'active' : '' %>">Create User</a>
+
                 </li>
 
                 
-                <li class="nav-item">
-                    <a href="/admin/blog/create" class="nav-link <%= who_active=="Create Blog" ? 'active' : '' %>">Create Blog</a>
-                </li>
 
                 
-                <li class="nav-item">
-                    <a href="/admin/category/create" class="nav-link <%= who_active=="Create Category" ? 'active' : '' %>">Create Category</a>
-                </li>
+
                 
-                <li class="nav-item">
-                    <a href="/admin/role/create" class="nav-link <%= who_active=="Create Role" ? 'active' : '' %>">Create Role</a>
-                </li>
+              
+
+                
+                
+                
+               
                 <% } else if (isModerator) { %>
                     <li class="nav-item">
                         <a href="/kullanicilar" class="nav-link <%= who_active=="All Blogs" ? 'active' : '' %>">All Blogs</a>

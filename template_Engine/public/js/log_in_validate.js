@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
 
         if(email.value.length === 0 || lastmail.value === -1){
-          console.log("girdi")
+          
           email.classList.remove('is-invalid');
           email.classList.remove('is-valid');}
           

@@ -48,7 +48,13 @@ const db = require('../config/db');
   }, {
   tableName: 'blog', // Veritabanında mevcut olan tablo adı
   freezeTableName: true, // Tablonun adının otomatik olarak çoğul yapılmasını engeller
-  timestamps: true // createdAt ve updatedAt alanlarını devre dışı bırakır
+  timestamps: true, // createdAt ve updatedAt alanlarını devre dışı bırakır
+  validate:{
+  checkOnay(){
+    if(!this.verify && this.home){
+      throw new Error('Anasayfa için onay verilmemiş blog yazısı oluşturulamaz.')
+    }
+  }}
 });
 
 

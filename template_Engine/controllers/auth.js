@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
-const csurf = require("csurf");
 const transporter = require("../helpers/mailer");
 const crypto = require("crypto");
-const { raw } = require("mysql2");
+
 const tables = {
     blog : require("../models/blog"),
     category : require("../models/category"),
@@ -26,27 +25,35 @@ exports.register_get = async (req, res, next) => {
 exports.register_post = async (req, res, next) => {
     const { username,email:temp_email,email_option, password } = req.body;
     email=temp_email+email_option;  
-    const hashedPassword = await bcrypt.hash(password, 10);
     
-
     
-    const isExist=await tables.users.findOne({where:
-        { [Op.or]: [{username:username},{e_mail:email}]}});
-
-    if(isExist !== null){
-        req.session.message={text:"Bu kullanıcı adı veya e-mail adresi zaten kullanılmaktadır.",type:"danger"};
+    try{
+        const isExist=await tables.users.findOne({where:
+            { [Op.or]: [{username:username},{e_mail:email}]}});
+    
+        if(isExist !== null){
+            req.session.message={text:"Bu kullanıcı adı veya e-mail adresi zaten kullanılmaktadır.",type:"danger"};
+            return res.redirect("/account/register");
+        }
+    
+        const user=await tables.users.create({username:username,position:"kullanici",e_mail:email,password:password});
+        req.session.message={text:"Başarıyla kayıt olunmuştur.",type:"success"};
+        transporter.sendMail({
+            from:transporter.options.auth.user,
+            to:email,
+            subject:"Kullanıcı kaydı",
+            text:"Merhaba "+username+" kullanıcı kaydınız başarılı bir şekilde gerçekleştirilmiştir.\n\n  İyi günler dileriz."
+        });
+        res.redirect("/account/login");
+    }
+    catch(err){
+        for(let i in err.errors){
+            req.session.message={text:err.errors[i].message,type:"danger"};
+        }
         return res.redirect("/account/register");
     }
-
-    const user=await tables.users.create({username:username,position:"kullanici",e_mail:email,password:hashedPassword});
-    req.session.message={text:"Başarıyla kayıt olunmuştur.",type:"success"};
-    transporter.sendMail({
-        from:transporter.options.auth.user,
-        to:email,
-        subject:"Kullanıcı kaydı",
-        text:"Merhaba "+username+" kullanıcı kaydınız başarılı bir şekilde gerçekleştirilmiştir.\n\n  İyi günler dileriz."
-    });
-    res.redirect("/account/login");
+    
+    
 }
 
 exports.login_get = async (req, res, next) => {

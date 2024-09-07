@@ -5,7 +5,8 @@ const storage=multer.diskStorage({
         cb(null,"./public/images");
     },
     filename: function(req,file,cb){
-        cb(null,path.parse(file.originalname)+"-"+Date.now()+path.extname(file.originalname));
+        cb(null,path.parse(file.originalname).name+"-"+Date.now()+path.extname(file.originalname));
+        
     }
 })
 

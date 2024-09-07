@@ -62,8 +62,9 @@ exports.blogcategory_with_id = async (req,res,next) => {
     }
 
 exports.create_blog_get = async (req,res,next) => {
-    req.message=req.session.message;
+    const message=req.session.message;
     delete req.session.message;
+    try{ 
     const categories= await tables.category.findAll({});
 
     res.render("admins/create-blog",{   
@@ -71,8 +72,13 @@ exports.create_blog_get = async (req,res,next) => {
         who_active:"Create Blog",
         categories:categories,
         iscreated:req.query.variable,
-        main_Page:"admin"
+        main_Page:"admin",
+        values:message
     })
+}catch(err){
+    console.log(err);
+}
+   
 }
 
 exports.delete_blog = async(req,res,next) => {
@@ -104,7 +110,7 @@ exports.delete_category = async(req,res,next) => {
 
 
 exports.create_blog_post = async (req,res,next) => {
- 
+    
     const {baslik,aciklama,category,altyazi}=req.body;
     const resim=req.file ? req.file.filename : "default.jpg";
     const verify=req.body.verify == "on" ? true : false;
@@ -113,6 +119,27 @@ exports.create_blog_post = async (req,res,next) => {
     const url=slug(baslik);
     const categoriler=req.body.categories;
     const userId=req.session.userId;
+
+    try{
+    if(baslik==""){
+        throw new Error("Başlık boş olamaz.");
+    }
+    if(baslik.length < 5 || baslik.length > 30){
+        throw new Error("Başlık 5-30 karakter arasında olmalıdır.");
+    }
+
+    if(aciklama==""){
+        throw new Error("Açıklama boş olamaz.");
+    }
+    if(categoriler === undefined){
+        throw new Error("Kategori seçmelisiniz.");
+    }
+    if(resim==""){
+        resim="default.jpg";
+    }
+   
+
+
     const insert_blog=await tables.blog.create({title:baslik,explanation:aciklama,picture:resim,categoryId:category,home:home,verify:verify,isvisible:isvisible,url:url,subtitle:altyazi,userId:userId});
 
     if(categoriler !== undefined){
@@ -121,10 +148,21 @@ exports.create_blog_post = async (req,res,next) => {
         id: {[Op.in]:categoriler}
   }});
    insert_blog.addCategories(selectedCategories);
+   req.session.message={text:"Blog başarıyla oluşturuldu.",type:"success"};
+   res.redirect("/admin/blog/create");
 }   
-    req.session.message={text:"Blog başarıyla oluşturuldu.",type:"success"};
-   
+}catch(err){
+    let errormessage="";
+    if(err instanceof Error){
+        errormessage+=err.message;
+    }
+    req.session.message={text:errormessage,type:"danger",subtitle:altyazi,title:baslik,explanation:aciklama,picture:resim,categories:categoriler,home:home,verify:verify,isvisible:isvisible};
+    
     res.redirect("/admin/blog/create");
+}
+    
+   
+   
 }   
 
 exports.edit_blog_get = async(req,res,next) => {
@@ -196,15 +234,16 @@ exports.edit_blog_post = async(req,res,next) => {
     const home=req.body.home == "on" ? true : false;
     const isvisible=req.body.isvisible == "on" ? true : false;
     const categoriler=req.body.categories;
-    let resim = req.body.resim;
+    let resim ="";
     if(req.file){
         resim=req.file.filename;
-        fs.unlink("./public/images/"+req.body.resim, (err) => {console.log(err)});
+        fs.unlink("./public/images/"+req.body.resim, (err) => {console.log("resim hatası"+err)});
     }
-    
- 
-
-    const blog = await tables.blog.findOne({where:{url:req.body.blogid},include:{
+    if(resim === ""){
+        resim="default.jpg";
+    }
+  
+    const blog = await tables.blog.findOne({where:{url:req.params.slug},include:{
         model:tables.category,  //burada bloğun kategorilerini çekiyoruz.
         attributes:["id"]
         }

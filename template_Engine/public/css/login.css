@@ -1,7 +1,10 @@
 body{
 background-image: url('../images/free.jpg');
+image-orientation: from-image;
 background-size: cover;
-background-repeat: no-repeat;
+background-repeat:no-repeat;
+background-attachment:fixed;
+background-position: center center;
 
 
 
