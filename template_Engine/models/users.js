@@ -58,8 +58,8 @@ const bcrypt = require("bcrypt");
   timestamps: true // createdAt ve updatedAt alanlarını devre dışı bırakır
 });
 
-user.afterValidate((user) => {
-  user.password = bcrypt.hashSync(user.password, 10);
+user.afterValidate( async (user) => {
+  user.password = await bcrypt.hashSync(user.password, 10);
 });
 
 module.exports = user;

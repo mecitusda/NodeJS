@@ -10,7 +10,7 @@ exports.blog_category = async (req, res) => {
         
         const { page=0 } = req.query;
    
-        const {rows,count} =await tables.blog.findAndCountAll({include:req.params.slug ? {model:tables.category,where:{url:req.params.slug}}:null,limit:parseInt(process.env.PAGE_SIZE),offset:parseInt(process.env.PAGE_SIZE)*page});
+        const {rows,count} =await tables.blog.findAndCountAll({where:{verify:true,isvisible:true},include:req.params.slug ? {model:tables.category,where:{url:req.params.slug}}:null,limit:parseInt(process.env.PAGE_SIZE),offset:parseInt(process.env.PAGE_SIZE)*page});
         const categories = await tables.category.findAll({});
         res.status(200).render("users/users", {
             title: "Kategoriye Göre Bloglar",
@@ -25,8 +25,7 @@ exports.blog_category = async (req, res) => {
         });
 
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ err: "Bir hata oluştu." });
+        next(err.message)
     }
 }   
 
@@ -42,10 +41,9 @@ exports.blog_with_id =  async (req, res, next) => {
             });
         }
         
-        res.status(200).redirect("/");
+        res.status(404).redirect("error/not-found");
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ err: "Bir hata oluştu." });
+        next(err.message)
     }
 }
 
@@ -69,8 +67,7 @@ exports.blogs =  async (req, res, next) => {
             countPage:Math.ceil(count/parseInt(process.env.PAGE_SIZE))
         });
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ err: "Bir hata oluştu." });
+        next(err.message)
     }
 }
 
@@ -94,7 +91,6 @@ exports.home = async (req, res, next) => {
             countPage:Math.ceil(count/parseInt(process.env.PAGE_SIZE))
         });
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ err: "Bir hata oluştu." });
+        next(err.message)
     }
 }
