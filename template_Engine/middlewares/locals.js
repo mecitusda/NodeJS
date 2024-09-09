@@ -6,5 +6,6 @@ module.exports= function(req,res,next) {
     res.locals.roles = req.session.roles
     res.locals.isAdmin = req.session.roles ? req.session.roles.includes("admin")  : false;
     res.locals.isModerator =req.session.roles ? req.session.roles.includes("moderator") : false;
+    res.locals.isUser = req.session.roles ? req.session.roles.includes("user") : false;
     next(); 
 }
