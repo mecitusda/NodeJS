@@ -37,7 +37,6 @@ exports.register_post = async (req, res, next) => {
         }
     
         const user=await tables.users.create({username:username,position:"kullanici",e_mail:email,password:password});
-        await user.createRole({rolename:"user"});
         req.session.message={text:"Başarıyla kayıta olunmuştur.",type:"success"};
         transporter.sendMail({
             from:transporter.options.auth.user,
@@ -48,16 +47,10 @@ exports.register_post = async (req, res, next) => {
         res.redirect("/account/login");
     }
     catch(err){
-        if(err.name === "SequelizeValidationError" || err.name === "SequelizeUniqueConstraintError"){//validation error
         for(let i in err.errors){
-            req.session.message={text:err.message,type:"danger"};
+            req.session.message={text:err.errors[i].message,type:"danger"};
         }
         return res.redirect("/account/register");
-    }
-    else{
-        next(err.message)
-    }
-
     }
     
     
@@ -81,9 +74,6 @@ exports.login_get = async (req, res, next) => {
 
 exports.login_post = async (req, res, next) => {
     const { username, password } = req.body;
-
-    try{
-    
     const check_name = await tables.users.findOne({where:{username:username}});
 
     if(check_name){
@@ -105,7 +95,7 @@ exports.login_post = async (req, res, next) => {
         }else{
             req.session.message={text:"Şifre hatalı",type:"danger"};
       
-            
+
             const url=  (req.query.returnUrl ?"?returnUrl="+req.query.returnUrl:false) || "";
             return res.redirect("/account/login"+url);
         }
@@ -113,24 +103,16 @@ exports.login_post = async (req, res, next) => {
     const url=  (req.query.returnUrl ?"?returnUrl="+req.query.returnUrl:false) || "";
     req.session.message={text:"Kullanıcı adı hatalı",type:"danger"};
     
-    return res.redirect("/account/login"+url);}
-    catch(err){
-        next(err.message)
-    }
-    
+    return res.redirect("/account/login"+url);
 }
 
 exports.logout_get = async (req, res, next) => {
     const message = req.session.message;
-    try{ 
-        const url = req.query.returnUrl || "/";
-        await req.session.destroy();
-        res.cookie("message",message)
-        return res.redirect(url);
-    }catch(err){
-        next(err.message)
-    }
-   
+    const url = req.query.returnUrl || "/";
+    await req.session.destroy();
+    res.cookie("message",message)
+    console.log("çıkış");
+    return res.redirect(url);
 }
 
 exports.forgot_get = async (req, res, next) => {
@@ -146,9 +128,6 @@ exports.forgot_get = async (req, res, next) => {
 
 exports.forgot_post = async (req, res, next) => {  
     const { email } = req.body;
-
-    try{
-    
     const isExist=await tables.users.findOne({where:{e_mail:email}});
     if(!isExist){
         req.session.message={text:"Bu e-mail adresi ile kayıtlı bir kullanıcı bulunamadı.",type:"danger"};
@@ -168,20 +147,14 @@ exports.forgot_post = async (req, res, next) => {
     });
     req.session.message={text:"Şifrenizi sıfırlamak için eposta adresinize kontrol ediniz.",type:"success"};
     
-    res.redirect("/account/login");}
-    catch(err){
-        next(err.message)
-    }
-
-    
+    res.redirect("/account/login");
 }
 
 exports.reset_get = async (req, res, next) => {
     const token = req.params.token;
-
-    try{
-        
     const user = await tables.users.findOne({where:{resetToken:token,resetTokenExpiration:{[Op.gt]:Date.now()}}});
+
+
     if(!user){
         req.session.message={text:"This action has expired!",type:"danger"};
         return res.redirect("/account/login");
@@ -193,34 +166,23 @@ exports.reset_get = async (req, res, next) => {
         main_Page:"",
         username: user.username,
         
-    });}
-    catch(err){
-        next(err.message)
-    }
-    
+    });
 }
 
 
 exports.reset_post = async (req, res, next) => {
     const { password, username,token } = req.body;
-
-    try{
-        const user = await tables.users.findOne({where:{username:username}});
-        if(!user){
-            req.session.message={text:"An error occurred.",type:"danger"};
-            return res.redirect("/account/login");
-        }
-    
-        const hashedPassword = await bcrypt.hash(password, 10);
-        user.password = hashedPassword;
-        user.resetToken = null;
-        user.resetTokenExpiration = null;
-        await user.save();
-        req.session.message={text:"Your password has been changed successfully.",type:"success"};
-        res.redirect("/account/login");
-    }
-    catch(err){
-        next(err.message)
+    const user = await tables.users.findOne({where:{username:username}});
+    if(!user){
+        req.session.message={text:"An error occurred.",type:"danger"};
+        return res.redirect("/account/login");
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    user.resetToken = null;
+    user.resetTokenExpiration = null;
+    await user.save();
+    req.session.message={text:"Your password has been changed successfully.",type:"success"};
+    res.redirect("/account/login");
 }

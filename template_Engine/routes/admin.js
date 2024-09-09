@@ -4,13 +4,12 @@ const controllerAdmin = require("../controllers/admin");
 const isAdmin = require("../middlewares/isAdmin");
 const checkcsrf_token = require("../middlewares/csrf");
 const isModerator = require("../middlewares/isModerator");
-const isUser = require("../middlewares/isUser");
 const { upload } = require("../helpers/image-upload");
 const upload_image = require("../helpers/image-upload").upload;
 
 router.get("/blogs",isModerator,controllerAdmin.blogs)
 
-router.get("/blog/category/:slug",checkcsrf_token,controllerAdmin.blogcategory_with_id)
+router.get("/blog/category/:slug",isModerator,checkcsrf_token,controllerAdmin.blogcategory_with_id)
     
 
 
@@ -37,7 +36,7 @@ router.post("/blog/edit/:slug",isModerator,upload_image.single("resim"),controll
 
 router.get("/categories",isAdmin,controllerAdmin.categories);
 
-router.get("/blog/:slug",isUser,controllerAdmin.blog_with_id);
+router.get("/blog/:slug",isModerator,controllerAdmin.blog_with_id);
 
 router.get("/users",isAdmin,checkcsrf_token,controllerAdmin.users_get);
 router.get("/user/create",isAdmin,checkcsrf_token,controllerAdmin.create_user_get);
@@ -60,7 +59,7 @@ router.get("/role/delete/:roleid",isAdmin,checkcsrf_token,controllerAdmin.delete
 
 router.get("/role/create",isAdmin,checkcsrf_token,controllerAdmin.create_role_get);
 router.post("/role/create",isAdmin,controllerAdmin.create_role_post);
-router.use("/",isUser,controllerAdmin.home);
+router.use("/",controllerAdmin.home);
 
 
 module.exports=router;

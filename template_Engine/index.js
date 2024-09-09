@@ -13,10 +13,8 @@ const path=require("path");
 // routers
 const auth = require("./routes/auth");
 const user_routers= require("./routes/user")
-const admin_routers= require("./routes/admin")
-const log = require("./middlewares/log");
-const error_handler = require("./middlewares/error-handling");
-const not_found = require("./middlewares/not-found");
+const admin_routers=require("./routes/admin")
+
 
 //custom modules
 const locals = require("./middlewares/locals");
@@ -82,9 +80,7 @@ app.use(locals)
 app.use("/admin",admin_routers)
 app.use(user_routers)
 app.use("/account",auth)
-app.use("*",not_found);
 
-app.use(log); // Will be Log with winston
-app.use(error_handler);
+    
   
 app.listen(200,console.log("dinlendi."))
