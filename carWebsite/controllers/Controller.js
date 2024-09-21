@@ -1,0 +1,8 @@
+module.exports.home = (req,res) => {
+    res.render("../views/pages/Home",{
+        slide_image:[{image:"/static/images/car1.jpg",text:"Ferrari"},{image:"/static/images/car2.jpg",text:"BMW"},{image:"/static/images/car3.jpg",text:"Mercedes"}],
+        brands:[{name:"BMW",image:"/static/images/bmw-logo.png",title:"BMW",content:`
+BMW, otomobil dünyasında performans ve konforun simgesi olarak öne çıkar. Özellikle "M Süspansiyon" sistemi, yüksek hızlarda mükemmel kontrol ve yol tutuşu sunar. Aktif süspansiyon kontrolü sayesinde farklı yol koşullarına hızla adapte olurken, dinamik denge kontrolü (DSC) sistemi, kaymayı önleyerek güvenli sürüş deneyimini artırır. Bu özellikler, BMW’nin sürüş dinamiklerini ve sürücü odaklı mühendislik anlayışını vurgular, her yolculuğu keyifli hale getirir.`},{name:"Mercedes",image:"/static/images/mercedes-logo.png",title:"Mercedes",content:`Mercedes-Benz, lüks ve inovasyonun sembolüdür. "Airmatic" süspansiyon sistemi, yol koşullarına göre otomatik ayarlanarak konfor ve kontrol sunar. "ESP" (Elektronik Stabilite Programı) ile kaymayı önleyerek güvenliği artırır. Yüksek kaliteli iç mekan tasarımı ve yenilikçi teknolojileri, her yolculuğu lüks bir deneyime dönüştürür.`},{name:"Audi",image:"/static/images/Audi-logo.png",title:"Audi",content:`Audi, teknolojik yenilik ve zarafeti bir araya getiren bir lüks otomobil markasıdır. "Quattro" dört tekerlekten çekiş sistemi, mükemmel yol tutuşu ve sürüş dinamikleri sunar. "Audi Virtual Cockpit" gibi ileri düzey dijital ekranlar, sürücüye kapsamlı bilgi ve kişiselleştirilmiş bir deneyim sağlar. Şık tasarımı ve yüksek kaliteli iç mekanlarıyla, Audi araçları her yolculuğu hem konforlu hem de keyifli hale getirir.`}],
+    });
+}
+
