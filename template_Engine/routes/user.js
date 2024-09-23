@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controllerUser = require("../controllers/user");
-const isUser = require("../middlewares/isUser");
+
 
 // Önbellek kontrol başlıkları eklemek için bir middleware
 router.use((req, res, next) => {

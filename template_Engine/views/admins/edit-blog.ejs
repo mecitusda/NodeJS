@@ -13,6 +13,7 @@
     <div class="container mt-3 ">
       <form method="POST" enctype="multipart/form-data" action="/admin/blog/edit/<%=blog.url%>?_csrf=<%= csurfToken %>"> <!-- name should be _csrf -->
 
+        <%= blog.url %>
         <input type="hidden" name="resim" value="<%= blog.picture %>">  
         <div class="row my-5 gx-5">
               
