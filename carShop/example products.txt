@@ -1,0 +1,15 @@
+ {
+    "name":"Mirac Usda",
+    "brand":"BMW",
+    "model":"M4",
+    "description":"Araçta hasar kaydı bulunmamaktadır.Temiz kullanılmıştır.",
+    "price":"2000000",
+    "imageURL":"BMW-M4-1.jpeg",
+    "isActive":true,
+    "year":"2019"
+    }
+
+
+{
+   "name":"Araba"
+}
